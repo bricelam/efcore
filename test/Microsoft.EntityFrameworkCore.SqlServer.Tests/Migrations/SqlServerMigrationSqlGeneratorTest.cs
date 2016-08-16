@@ -271,8 +271,6 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Tests.Migrations
 
             Assert.Equal(
                 "CREATE DATABASE [Northwind];" + EOL +
-                "GO" + EOL +
-                EOL +
                 "IF SERVERPROPERTY('EngineEdition') <> 5 EXEC(N'ALTER DATABASE [Northwind] SET READ_COMMITTED_SNAPSHOT ON');" + EOL,
                 Sql);
         }
@@ -450,8 +448,6 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Tests.Migrations
 
             Assert.Equal(
                 "IF SERVERPROPERTY('EngineEdition') <> 5 EXEC(N'ALTER DATABASE [Northwind] SET SINGLE_USER WITH ROLLBACK IMMEDIATE');" + EOL +
-                "GO" + EOL +
-                EOL +
                 "DROP DATABASE [Northwind];" + EOL,
                 Sql);
         }

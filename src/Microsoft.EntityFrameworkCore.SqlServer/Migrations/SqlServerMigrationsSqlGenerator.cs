@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
@@ -17,6 +18,7 @@ namespace Microsoft.EntityFrameworkCore.Migrations
 {
     public class SqlServerMigrationsSqlGenerator : MigrationsSqlGenerator
     {
+        private bool? _transactionSuppressed;
         private int _variableCounter;
 
         public SqlServerMigrationsSqlGenerator(
@@ -26,6 +28,16 @@ namespace Microsoft.EntityFrameworkCore.Migrations
             [NotNull] IRelationalAnnotationProvider annotations)
             : base(commandBuilderFactory, sqlGenerationHelper, typeMapper, annotations)
         {
+        }
+
+        public override IReadOnlyList<MigrationCommand> Generate(
+         IReadOnlyList<MigrationOperation> operations,
+         IModel model = null)
+        {
+            _transactionSuppressed = null;
+            _variableCounter = 0;
+
+            return base.Generate(operations, model);
         }
 
         protected override void Generate(MigrationOperation operation, IModel model, MigrationCommandListBuilder builder)
@@ -264,11 +276,9 @@ namespace Microsoft.EntityFrameworkCore.Migrations
             Check.NotNull(builder, nameof(builder));
 
             builder
-                .EndCommand()
                 .Append("CREATE DATABASE ")
                 .Append(SqlGenerationHelper.DelimitIdentifier(operation.Name))
                 .AppendLine(SqlGenerationHelper.StatementTerminator)
-                .EndCommand(suppressTransaction: true)
                 .Append("IF SERVERPROPERTY('EngineEdition') <> 5 EXEC(N'ALTER DATABASE ")
                 .Append(SqlGenerationHelper.DelimitIdentifier(operation.Name))
                 .Append(" SET READ_COMMITTED_SNAPSHOT ON')")
@@ -286,12 +296,10 @@ namespace Microsoft.EntityFrameworkCore.Migrations
             Check.NotNull(builder, nameof(builder));
 
             builder
-                .EndCommand()
                 .Append("IF SERVERPROPERTY('EngineEdition') <> 5 EXEC(N'ALTER DATABASE ")
                 .Append(SqlGenerationHelper.DelimitIdentifier(operation.Name))
                 .Append(" SET SINGLE_USER WITH ROLLBACK IMMEDIATE')")
                 .AppendLine(SqlGenerationHelper.StatementTerminator)
-                .EndCommand(suppressTransaction: true)
                 .Append("DROP DATABASE ")
                 .Append(SqlGenerationHelper.DelimitIdentifier(operation.Name))
                 .AppendLine(SqlGenerationHelper.StatementTerminator);
@@ -567,6 +575,28 @@ namespace Microsoft.EntityFrameworkCore.Migrations
                 .Append(" DROP CONSTRAINT [' + ")
                 .Append(variable)
                 .AppendLine(" + ']');");
+        }
+
+        protected override void EndStatement(MigrationCommandListBuilder builder, bool suppressTransaction = false)
+        {
+            Check.NotNull(builder, nameof(builder));
+
+            if (!_transactionSuppressed.HasValue)
+            {
+                _transactionSuppressed = suppressTransaction;
+            }
+            else if (_transactionSuppressed.Value != suppressTransaction)
+            {
+                builder.EndCommand(suppressTransaction);
+                _transactionSuppressed = suppressTransaction;
+            }
+        }
+
+        protected override IReadOnlyList<MigrationCommand> GetCommandList(MigrationCommandListBuilder builder)
+        {
+            builder.EndCommand(_transactionSuppressed ?? false);
+
+            return base.GetCommandList(builder);
         }
     }
 }

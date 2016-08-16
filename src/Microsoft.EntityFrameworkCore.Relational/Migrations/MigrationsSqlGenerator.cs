@@ -82,7 +82,7 @@ namespace Microsoft.EntityFrameworkCore.Migrations
                 Generate(operation, model, builder);
             }
 
-            return builder.GetCommandList();
+            return GetCommandList(builder);
         }
 
         protected virtual void Generate(
@@ -872,6 +872,9 @@ namespace Microsoft.EntityFrameworkCore.Migrations
 
             builder.EndCommand(suppressTransaction);
         }
+
+        protected virtual IReadOnlyList<MigrationCommand> GetCommandList(MigrationCommandListBuilder builder)
+            => builder.GetCommandList();
 
         private string ColumnList(string[] columns) => string.Join(", ", columns.Select(SqlGenerationHelper.DelimitIdentifier));
     }
