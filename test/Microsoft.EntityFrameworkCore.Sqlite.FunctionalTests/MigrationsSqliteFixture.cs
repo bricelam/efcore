@@ -18,6 +18,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
 
             _options = new DbContextOptionsBuilder()
                 .UseInternalServiceProvider(serviceProvider)
+                // TODO: Review
                 .UseSqlite("Data Source=" + nameof(MigrationsSqliteTest) + ".db").Options;
         }
 

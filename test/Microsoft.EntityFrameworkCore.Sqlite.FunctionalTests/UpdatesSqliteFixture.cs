@@ -49,8 +49,6 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
 
             context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            context.Database.UseTransaction(testStore.Transaction);
-
             return context;
         }
     }

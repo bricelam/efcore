@@ -56,9 +56,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
                         w.Ignore(CoreEventId.SensitiveDataLoggingEnabledWarning);
                     });
 
-            var context = new DataAnnotationContext(optionsBuilder.Options);
-            context.Database.UseTransaction(testStore.Transaction);
-            return context;
+            return new DataAnnotationContext(optionsBuilder.Options);
         }
     }
 }

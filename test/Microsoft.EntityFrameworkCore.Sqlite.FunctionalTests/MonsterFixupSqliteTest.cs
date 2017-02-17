@@ -41,6 +41,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
         }
 
         private static string CreateConnectionString(string name)
+            // TODO: Review
             => new SqliteConnectionStringBuilder
             {
                 DataSource = name + ".db"

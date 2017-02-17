@@ -56,7 +56,6 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
                     .UseInternalServiceProvider(_serviceProvider);
 
                 var context = new StoreGeneratedContext(optionsBuilder.Options);
-                context.Database.UseTransaction(testStore.Transaction);
 
                 return context;
             }

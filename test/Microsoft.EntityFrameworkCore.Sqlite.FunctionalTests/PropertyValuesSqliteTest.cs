@@ -51,10 +51,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
                     .UseSqlite(testStore.Connection)
                     .UseInternalServiceProvider(_serviceProvider);
 
-                var context = new AdvancedPatternsMasterContext(optionsBuilder.Options);
-                context.Database.UseTransaction(testStore.Transaction);
-
-                return context;
+                return new AdvancedPatternsMasterContext(optionsBuilder.Options);
             }
         }
     }

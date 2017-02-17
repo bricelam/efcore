@@ -84,6 +84,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
 
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
+                // TODO: Review
                 optionsBuilder.UseSqlite($"Data Source=./{DatabaseName}.db");
 
                 base.OnConfiguring(optionsBuilder);

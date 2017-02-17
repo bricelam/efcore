@@ -19,6 +19,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
             => services.AddEntityFrameworkSqlite();
 
         protected override void UseProviderOptions(DbContextOptionsBuilder optionsBuilder)
+            // TODO: Review
             => optionsBuilder.UseSqlite(new SqliteConnection("Data Source=:memory:"));
     }
 }

@@ -1,138 +1,71 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Data.Common;
-using System.IO;
-using System.Threading;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Specification.Tests;
+using System;
+using System.Data.Common;
 
 namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
 {
     public class SqliteTestStore : RelationalTestStore
     {
-        private static int _scratchCount;
+        private readonly SqliteConnection _lifetimeConnection;
 
-        public static SqliteTestStore GetOrCreateShared(string name, bool useTransaction, bool sharedCache, Action initializeDatabase = null) =>
-            new SqliteTestStore(name).CreateShared(initializeDatabase, useTransaction, sharedCache);
-
-        public static SqliteTestStore GetOrCreateShared(string name, Action initializeDatabase = null) =>
-            GetOrCreateShared(name, true, false, initializeDatabase);
-
-#if NET452
-        private static string BaseDirectory => AppDomain.CurrentDomain.BaseDirectory;
-#else
-        private static string BaseDirectory => AppContext.BaseDirectory;
-#endif
-
-        public static SqliteTestStore CreateScratch(bool sharedCache = false)
+        public SqliteTestStore(string connectionString)
         {
-            string name;
-            do
+            if (new SqliteConnectionStringBuilder(connectionString).Mode == SqliteOpenMode.Memory)
             {
-                name = "scratch-" + Interlocked.Increment(ref _scratchCount);
+                _lifetimeConnection = new SqliteConnection(connectionString);
+                _lifetimeConnection.Open();
             }
-            while (File.Exists(name + ".db")
-                   || File.Exists(Path.Combine(BaseDirectory, name + ".db")));
 
-            return new SqliteTestStore(name).CreateTransient(sharedCache);
+            Connection = new SqliteConnection(connectionString);
         }
 
-        private SqliteConnection _connection;
-        private readonly string _name;
-        private bool _deleteDatabase;
-        public const int CommandTimeout = 30;
-
-        private SqliteTestStore(string name)
+        public static SqliteTestStore GetOrCreateShared(string name, Action initializeDatabase = null)
         {
-            _name = name;
+            var store = new SqliteTestStore(
+                new SqliteConnectionStringBuilder
+                {
+                    DataSource = name,
+                    Cache = SqliteCacheMode.Shared
+                }.ToString());
+            store.CreateShared(nameof(SqliteTestStore) + name, initializeDatabase);
+
+            return store;
         }
+
+        public static SqliteTestStore CreateScratch()
+            => new SqliteTestStore(CreateConnectionString(Guid.NewGuid().ToString()));
 
         public override string ConnectionString => Connection.ConnectionString;
 
-        private SqliteTestStore CreateShared(Action initializeDatabase, bool openConnection, bool sharedCache)
-        {
-            CreateShared(typeof(SqliteTestStore).Name + _name, initializeDatabase);
-
-            CreateConnection(sharedCache);
-
-            if (openConnection)
-            {
-                OpenConnection();
-            }
-
-            return this;
-        }
-
-        private SqliteTestStore CreateTransient(bool sharedCache)
-        {
-            CreateConnection(sharedCache);
-            OpenConnection();
-
-            _deleteDatabase = true;
-            return this;
-        }
-
-        private void CreateConnection(bool sharedCache = false)
-        {
-            _connection = new SqliteConnection(CreateConnectionString(_name, sharedCache));
-
-            OpenConnection();
-        }
-
         public override void OpenConnection()
         {
-            _connection.Open();
+            Connection.Open();
 
-            var command = _connection.CreateCommand();
-            command.CommandText = "PRAGMA foreign_keys=ON;";
+            var command = Connection.CreateCommand();
+            command.CommandText = "PRAGMA foreign_keys = 1;";
             command.ExecuteNonQuery();
         }
 
-        public int ExecuteNonQuery(string sql, params object[] parameters)
-        {
-            using (var command = CreateCommand(sql, parameters))
-            {
-                return command.ExecuteNonQuery();
-            }
-        }
-
-        private DbCommand CreateCommand(string commandText, object[] parameters)
-        {
-            var command = _connection.CreateCommand();
-
-            command.CommandText = commandText;
-            command.CommandTimeout = CommandTimeout;
-
-            for (var i = 0; i < parameters.Length; i++)
-            {
-                command.Parameters.AddWithValue("@p" + i, parameters[i]);
-            }
-
-            return command;
-        }
-
-        public override DbConnection Connection => _connection;
-        public override DbTransaction Transaction => null;
+        public override DbConnection Connection { get; }
 
         public override void Dispose()
         {
-            Transaction?.Dispose();
-            Connection?.Dispose();
-            base.Dispose();
+            Connection.Dispose();
+            _lifetimeConnection?.Dispose();
 
-            if (_deleteDatabase)
-            {
-                File.Delete(_name + ".db");
-            }
+            base.Dispose();
         }
 
-        public static string CreateConnectionString(string name, bool sharedCache = false) =>
-            new SqliteConnectionStringBuilder
+        public static string CreateConnectionString(string name)
+            => new SqliteConnectionStringBuilder
             {
-                DataSource = name + ".db",
-                Cache = sharedCache ? SqliteCacheMode.Shared : SqliteCacheMode.Private
+                DataSource = name,
+                Mode = SqliteOpenMode.Memory,
+                Cache = SqliteCacheMode.Shared
             }.ToString();
     }
 }

@@ -14,6 +14,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.Tests
         public void Can_add_extension_with_max_batch_size()
         {
             var optionsBuilder = new DbContextOptionsBuilder();
+            // TODO: Review
             optionsBuilder.UseSqlite("Database=Crunchie", b => b.MaxBatchSize(123));
 
             var extension = optionsBuilder.Options.Extensions.OfType<SqliteOptionsExtension>().Single();
@@ -25,6 +26,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.Tests
         public void Can_add_extension_with_command_timeout()
         {
             var optionsBuilder = new DbContextOptionsBuilder();
+            // TODO: Review
             optionsBuilder.UseSqlite("Database=Crunchie", b => b.CommandTimeout(30));
 
             var extension = optionsBuilder.Options.Extensions.OfType<SqliteOptionsExtension>().Single();
@@ -36,6 +38,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.Tests
         public void Can_add_extension_with_connection_string()
         {
             var optionsBuilder = new DbContextOptionsBuilder();
+            // TODO: Review
             optionsBuilder.UseSqlite("Database=Crunchie");
 
             var extension = optionsBuilder.Options.Extensions.OfType<SqliteOptionsExtension>().Single();
@@ -49,6 +52,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.Tests
         public void Can_add_extension_with_connection_string_using_generic_options()
         {
             var optionsBuilder = new DbContextOptionsBuilder<DbContext>();
+            // TODO: Review
             optionsBuilder.UseSqlite("Database=Whisper");
 
             var extension = optionsBuilder.Options.Extensions.OfType<SqliteOptionsExtension>().Single();

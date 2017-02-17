@@ -17,12 +17,14 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.Tests
         protected class SqliteSetsContext : SetsContext
         {
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                // TODO: Review
                 => optionsBuilder.UseSqlite("Database = Dummy");
         }
 
         protected class SqliteNamedTablesContextContext : NamedTablesContext
         {
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                // TODO: Review
                 => optionsBuilder.UseSqlite("Database = Dummy");
         }
     }

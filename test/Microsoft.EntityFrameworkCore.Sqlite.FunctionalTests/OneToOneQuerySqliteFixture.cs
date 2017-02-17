@@ -24,7 +24,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
             _testStore = SqliteTestStore.CreateScratch();
 
             _options = new DbContextOptionsBuilder()
-                .UseSqlite(_testStore.ConnectionString)
+                .UseSqlite(_testStore.Connection)
                 .UseInternalServiceProvider(serviceProvider)
                 .Options;
 

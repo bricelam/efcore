@@ -62,7 +62,6 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
                         .UseInternalServiceProvider(_serviceProvider);
 
                     var context = new GraphUpdatesContext(optionsBuilder.Options);
-                    context.Database.UseTransaction(testStore.Transaction);
 
                     context.ChangeTracker.AutoDetectChangesEnabled = AutoDetectChanges;
 

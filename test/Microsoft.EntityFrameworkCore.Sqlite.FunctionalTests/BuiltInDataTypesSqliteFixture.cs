@@ -33,11 +33,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
         }
 
         public override DbContext CreateContext()
-        {
-            var context = new DbContext(_options);
-            context.Database.UseTransaction(_testStore.Transaction);
-            return context;
-        }
+            => new DbContext(_options);
 
         public override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -59,10 +59,7 @@ namespace Microsoft.EntityFrameworkCore.Sqlite.FunctionalTests
                         .UseSqlite(testStore.Connection)
                         .UseInternalServiceProvider(_serviceProvider);
 
-                    var context = new FieldMappingContext(optionsBuilder.Options);
-                    context.Database.UseTransaction(testStore.Transaction);
-
-                    return context;
+                    return new FieldMappingContext(optionsBuilder.Options);
                 }
             }
         }
