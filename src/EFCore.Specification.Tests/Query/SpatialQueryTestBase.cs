@@ -167,7 +167,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Contains = e.Polygon == null ? false : e.Polygon.Contains(point)
+                        Contains = e.Polygon == null ? (bool?)null : e.Polygon.Contains(point)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -193,7 +193,12 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             return AssertQuery<MultiLineStringEntity>(
                 isAsync,
-                es => es.Select(e => new { e.Id, Count = e.MultiLineString == null ? (int?)null : e.MultiLineString.Count }),
+                es => es.Select(
+                    e => new
+                    {
+                        e.Id,
+                        Count = e.MultiLineString == null ? (int?)null : e.MultiLineString.Count
+                    }),
                 elementSorter: x => x.Id);
         }
 
@@ -203,7 +208,12 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             return AssertQuery<LineStringEntity>(
                 isAsync,
-                es => es.Select(e => new { e.Id, Count = e.LineString == null ? (int?)null : ((LineString)e.LineString).Count }),
+                es => es.Select(
+                    e => new
+                    {
+                        e.Id,
+                        Count = e.LineString == null ? (int?)null : ((LineString)e.LineString).Count
+                    }),
                 elementSorter: x => x.Id);
         }
 
@@ -228,7 +238,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                         e => new
                         {
                             e.Id,
-                            CoveredBy = e.Point == null ? false : e.Point.CoveredBy(polygon)
+                            CoveredBy = e.Point == null ? (bool?)null : e.Point.CoveredBy(polygon)
                         }),
                 elementSorter: x => x.Id);
         }
@@ -241,7 +251,7 @@ namespace Microsoft.EntityFrameworkCore.Query
 
             return AssertQuery<PolygonEntity>(
                 isAsync,
-                es => es.Select(e => new { e.Id, Covers = e.Polygon == null ? false : e.Polygon.Covers(point) }),
+                es => es.Select(e => new { e.Id, Covers = e.Polygon == null ? (bool?)null : e.Polygon.Covers(point) }),
                 elementSorter: x => x.Id);
         }
 
@@ -262,7 +272,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Crosses = e.LineString == null ? false : e.LineString.Crosses(lineString)
+                        Crosses = e.LineString == null ? (bool?)null : e.LineString.Crosses(lineString)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -318,7 +328,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Disjoint = e.Polygon == null ? false : e.Polygon.Disjoint(point)
+                        Disjoint = e.Polygon == null ? (bool?)null : e.Polygon.Disjoint(point)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -475,7 +485,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        EqualsTopologically = e.Point == null ? false : e.Point.EqualsTopologically(point)
+                        EqualsTopologically = e.Point == null ? (bool?)null : e.Point.EqualsTopologically(point)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -549,7 +559,13 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             return AssertQuery<PolygonEntity>(
                 isAsync,
-                es => es.Select(e => new { e.Id, InteriorPoint = e.Polygon == null ? null : e.Polygon.InteriorPoint, e.Polygon }),
+                es => es.Select(
+                    e => new
+                    {
+                        e.Id,
+                        InteriorPoint = e.Polygon == null ? null : e.Polygon.InteriorPoint,
+                        e.Polygon
+                    }),
                 elementSorter: x => x.Id,
                 elementAsserter: (e, a) =>
                 {
@@ -612,7 +628,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Intersects = e.LineString == null ? false : e.LineString.Intersects(lineString)
+                        Intersects = e.LineString == null ? (bool?)null : e.LineString.Intersects(lineString)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -623,7 +639,12 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             return AssertQuery<LineStringEntity>(
                 isAsync,
-                es => es.Select(e => new { e.Id, IsClosed = e.LineString == null ? false : e.LineString.IsClosed }),
+                es => es.Select(
+                    e => new
+                    {
+                        e.Id,
+                        IsClosed = e.LineString == null ? (bool?)null : e.LineString.IsClosed
+                    }),
                 elementSorter: x => x.Id);
         }
 
@@ -637,7 +658,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        IsClosed = e.MultiLineString == null ? false : e.MultiLineString.IsClosed
+                        IsClosed = e.MultiLineString == null ? (bool?)null : e.MultiLineString.IsClosed
                     }),
                 elementSorter: x => x.Id);
         }
@@ -652,7 +673,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        IsEmpty = e.MultiLineString == null ? false : e.MultiLineString.IsEmpty
+                        IsEmpty = e.MultiLineString == null ? (bool?)null : e.MultiLineString.IsEmpty
                     }),
                 elementSorter: x => x.Id);
         }
@@ -663,7 +684,7 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             return AssertQuery<LineStringEntity>(
                 isAsync,
-                es => es.Select(e => new { e.Id, IsRing = e.LineString == null ? false : e.LineString.IsRing }),
+                es => es.Select(e => new { e.Id, IsRing = e.LineString == null ? (bool?)null : e.LineString.IsRing }),
                 elementSorter: x => x.Id);
         }
 
@@ -678,7 +699,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     new
                     {
                         e.Id,
-                        IsSimple = e.LineString == null ? false : e.LineString.IsSimple
+                        IsSimple = e.LineString == null ? (bool?)null : e.LineString.IsSimple
                     }),
                 elementSorter: x => x.Id);
         }
@@ -690,7 +711,7 @@ namespace Microsoft.EntityFrameworkCore.Query
             return AssertQuery<PointEntity>(
                 isAsync,
                 es => es
-                    .Select(e => new { e.Id, IsValid = e.Point == null ? false : e.Point.IsValid }),
+                    .Select(e => new { e.Id, IsValid = e.Point == null ? (bool?)null : e.Point.IsValid }),
                 elementSorter: x => x.Id);
         }
 
@@ -706,14 +727,18 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        IsWithinDistance = e.Point == null ? false : e.Point.IsWithinDistance(point, 1)
+                        IsWithinDistance = e.Point == null ? (bool?)null : e.Point.IsWithinDistance(point, 1)
                     }),
                 elementSorter: e => e.Id,
                 elementAsserter: (e, a) =>
                 {
                     Assert.Equal(e.Id, a.Id);
 
-                    if (AssertDistances)
+                    if (e.IsWithinDistance == null)
+                    {
+                        Assert.False(a.IsWithinDistance ?? false);
+                    }
+                    else if (AssertDistances)
                     {
                         Assert.Equal(e.IsWithinDistance, a.IsWithinDistance);
                     }
@@ -860,7 +885,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Overlaps = e.Polygon == null ? false : e.Polygon.Overlaps(polygon)
+                        Overlaps = e.Polygon == null ? (bool?)null : e.Polygon.Overlaps(polygon)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -913,7 +938,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Relate = e.Polygon == null ? false : e.Polygon.Relate(polygon, "212111212")
+                        Relate = e.Polygon == null ? (bool?)null : e.Polygon.Relate(polygon, "212111212")
                     }),
                 elementSorter: x => x.Id);
         }
@@ -1034,7 +1059,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Touches = e.Polygon == null ? false : e.Polygon.Touches(polygon)
+                        Touches = e.Polygon == null ? (bool?)null : e.Polygon.Touches(polygon)
                     }),
                 elementSorter: x => x.Id);
         }
@@ -1103,7 +1128,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                     e => new
                     {
                         e.Id,
-                        Within = e.Point == null ? false : e.Point.Within(polygon)
+                        Within = e.Point == null ? (bool?)null : e.Point.Within(polygon)
                     }),
                 elementSorter: x => x.Id);
         }

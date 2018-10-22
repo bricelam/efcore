@@ -89,8 +89,7 @@ FROM ""PolygonEntity"" AS ""e""");
                 @"@__point_0='0x000100000000000000000000D03F000000000000D03F000000000000D03F0000...' (Size = 60) (DbType = String)
 
 SELECT ""e"".""Id"", CASE
-    WHEN ""e"".""Polygon"" IS NULL
-    THEN 0 ELSE Contains(""e"".""Polygon"", @__point_0)
+    WHEN ""e"".""Polygon"" IS NOT NULL THEN Contains(""e"".""Polygon"", @__point_0)
 END AS ""Contains""
 FROM ""PolygonEntity"" AS ""e""");
         }
