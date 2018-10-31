@@ -188,6 +188,43 @@ function Get-DbContext
 }
 
 #
+# Get-Migration
+#
+
+Register-TabExpansion Get-Migration @{
+    Context = { param($x) GetContextTypes $x.Project $x.StartupProject }
+    Project = { GetProjects }
+    StartupProject = { GetProjects }
+}
+
+<#
+.SYNOPSIS
+    Lists the migrations for the selected project and whether they have been applied to the Database.
+
+.DESCRIPTION
+    Lists the migrations for the selected project and whether they have been applied to the Database.
+
+.PARAMETER Context
+    The DbContext to use.
+
+.PARAMETER Project
+    The project to use.
+
+.PARAMETER StartupProject
+    The startup project to use. Defaults to the solution's startup project.
+
+.LINK
+    about_EntityFrameworkCore
+#>
+function Get-Migration
+{
+    [CmdletBinding(PositionalBinding = $false)]
+    param([string] $Context, [string] $Project, [string] $StartupProject, [switch] $ShowPending)
+
+    GetMigrations $Context $Project $StartupProject $true | %{ WriteMigrationLine $_ $ShowPending }
+}
+
+#
 # Remove-Migration
 #
 
@@ -642,7 +679,7 @@ function GetContextTypes($projectName, $startupProjectName)
     return $result | %{ $_.safeName }
 }
 
-function GetMigrations($context, $projectName, $startupProjectName)
+function GetMigrations($context, $projectName, $startupProjectName, $returnFullMigration = $false)
 {
     $project = GetProject $projectName
     $startupProject = GetStartupProject $startupProjectName $project
@@ -653,7 +690,30 @@ function GetMigrations($context, $projectName, $startupProjectName)
     # NB: -join is here to support ConvertFrom-Json on PowerShell 3.0
     $result = (EF $project $startupProject $params -skipBuild) -join "`n" | ConvertFrom-Json
 
+    if ($returnFullMigration) {
+        return $result
+    }
+
     return $result | %{ $_.safeName }
+}
+
+function WriteMigrationLine($migration, $ShowPending)
+{
+    If ($ShowPending)
+    {        
+        If ($migration.applied -eq $true) {                        
+            Write-Host $migration.safeName -ForegroundColor Green
+        } 
+        Else {
+            Write-Host "$($migration.safeName) - Pending" -ForegroundColor Yellow
+        }        
+    }
+    Else
+    {
+        If ($migration.applied -eq $true){
+            Write-Host $migration.safeName
+        }
+    }
 }
 
 function WarnIfEF6($cmdlet)

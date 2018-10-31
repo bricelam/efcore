@@ -216,7 +216,9 @@ namespace Microsoft.EntityFrameworkCore.Design
                 ["ProviderName"] = info.ProviderName,
                 ["DatabaseName"] = info.DatabaseName,
                 ["DataSource"] = info.DataSource,
-                ["Options"] = info.Options
+                ["Options"] = info.Options,
+                ["PendingChanges"] = info.PendingChanges,
+                ["PendingMigrations"] = info.PendingMigrations
             };
         }
 
@@ -420,7 +422,8 @@ namespace Microsoft.EntityFrameworkCore.Design
                     ["Name"] = m.Name,
                     ["SafeName"] = nameGroups.Count(g => g.Key == m.Name) == 1
                         ? m.Name
-                        : m.Id
+                        : m.Id,
+                    ["Applied"] = m.Applied
                 });
         }
 
