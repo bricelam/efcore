@@ -167,7 +167,9 @@ namespace Microsoft.EntityFrameworkCore.Tools
                 args.Add(_runtime);
             }
 
-            args.Add("/verbosity:quiet");
+            // UNDONE
+            //args.Add("/verbosity:quiet");
+            args.Add("/verbosity:detailed");
             args.Add("/nologo");
 
             var exitCode = Exe.Run("dotnet", args, interceptOutput: true);
