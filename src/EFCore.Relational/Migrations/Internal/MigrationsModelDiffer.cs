@@ -854,6 +854,14 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Internal
                 && source.GetComputedColumnSql() == target.GetComputedColumnSql()
                 && Equals(GetDefaultValue(source), GetDefaultValue(target))
                 && source.GetDefaultValueSql() == target.GetDefaultValueSql()
+                // TODO
+                // - At the same ordinal of the primary key
+                // - At the same ordinal of a foreign key to the same table
+                // - At the same ordinal of a unique constraint
+                // - At the same ordinal of an index
+                // - At the same ordinal of a check constraint
+                // - Referencing foreign keys?
+                // - More?
                 && EntityTypePathEquals(
                         source.FindContainingPrimaryKey()?.DeclaringEntityType,
                         target.FindContainingPrimaryKey()?.DeclaringEntityType,

@@ -4414,6 +4414,7 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Internal
                 });
         }
 
+        // TODO: Test same foreign table
         [ConditionalFact]
         public void Rename_column_with_referencing_foreign_key_to_another_table_forces_drop_and_create()
         {
@@ -4514,8 +4515,11 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Internal
                 operations =>
                 {
                     Assert.Equal(2, operations.Count);
-                    Assert.IsType<RenameColumnOperation>(operations[0]);
-                    Assert.IsType<AddColumnOperation>(operations[1]);
+                    var renameOperation = Assert.IsType<RenameColumnOperation>(operations[0]);
+                    Assert.Equal("A", renameOperation.Name);
+                    Assert.Equal("C", renameOperation.NewName);
+                    var addOperation = Assert.IsType<AddColumnOperation>(operations[1]);
+                    Assert.Equal("B", addOperation.Name);
                 });
         }
 
@@ -4549,8 +4553,10 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Internal
                 {
                     Assert.Equal(4, operations.Count);
                     Assert.IsType<DropPrimaryKeyOperation>(operations[0]);
-                    Assert.IsType<DropColumnOperation>(operations[1]);
-                    Assert.IsType<AddColumnOperation>(operations[2]);
+                    var dropOperation = Assert.IsType<DropColumnOperation>(operations[1]);
+                    Assert.Equal("B", dropOperation.Name);
+                    var addOperation = Assert.IsType<AddColumnOperation>(operations[2]);
+                    Assert.Equal("C", addOperation.Name);
                     Assert.IsType<AddPrimaryKeyOperation>(operations[3]);
                 });
         }
@@ -4583,6 +4589,7 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Internal
                 },
                 operations => Assert.Collection(
                     operations,
+                    // TODO: Doesn't feel right. It's still part of the only index on the table
                     o => Assert.IsType<DropIndexOperation>(o),
                     o => Assert.IsType<DropColumnOperation>(o),
                     o => Assert.IsType<AddColumnOperation>(o),
