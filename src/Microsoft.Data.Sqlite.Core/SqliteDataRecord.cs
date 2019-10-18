@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.Data.Sqlite.Properties;
 using SQLitePCL;
 using static SQLitePCL.raw;
@@ -196,13 +197,16 @@ namespace Microsoft.Data.Sqlite
 
         public virtual long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
         {
-            var blob = GetCachedBlob(ordinal);
+            var blob = GetStream(ordinal);
 
             long bytesToRead = blob.Length - dataOffset;
             if (buffer != null)
             {
                 bytesToRead = Math.Min(bytesToRead, length);
-                Array.Copy(blob, dataOffset, buffer, bufferOffset, bytesToRead);
+                using (var binaryReader = new BinaryReader(blob))
+                {
+                    Array.Copy(binaryReader.ReadBytes((int)blob.Length), dataOffset, buffer, bufferOffset, bytesToRead);
+                }
             }
 
             return bytesToRead;
@@ -210,11 +214,14 @@ namespace Microsoft.Data.Sqlite
 
         public virtual long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
         {
-            var text = GetString(ordinal);
+            var textStream = GetStream(ordinal);
+            long charsToRead = textStream.Length - dataOffset;
 
-            int charsToRead = text.Length - (int)dataOffset;
-            charsToRead = Math.Min(charsToRead, length);
-            text.CopyTo((int)dataOffset, buffer, bufferOffset, charsToRead);
+            using (var streamReader = new StreamReader(textStream, Encoding.UTF8))
+            {
+                Array.Copy(streamReader.ReadToEnd().ToCharArray(), dataOffset, buffer, bufferOffset, Math.Min(charsToRead, length));
+            }
+
             return charsToRead;
         }
 
