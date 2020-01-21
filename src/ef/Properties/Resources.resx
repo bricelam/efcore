@@ -318,10 +318,10 @@
   <data name="DbContextScriptDescription" xml:space="preserve">
     <value>Generate a script to create all tables for the DbContext.</value>
   </data>
-  <data name="PendingChanges" xml:space="preserve">
-    <value>Pending Model Changes: {pendingChanges}</value>
+  <data name="HasPendingModelChanges" xml:space="preserve">
+    <value>There are pending model changes. Add a new migration.</value>
   </data>
-  <data name="PendingMigrations" xml:space="preserve">
-    <value>Pending Migrations: {pendingMigrations}</value>
+  <data name="NotApplied" xml:space="preserve">
+    <value> (Not Applied)</value>
   </data>
 </root>

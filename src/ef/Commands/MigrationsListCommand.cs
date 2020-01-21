@@ -40,10 +40,10 @@ namespace Microsoft.EntityFrameworkCore.Tools.Commands
                     : migrations[i]["Id"];
 
                 Reporter.WriteData("  {");
-                Reporter.WriteData("    \"id\": \"" + migrations[i]["Id"] + "\",");
-                Reporter.WriteData("    \"name\": \"" + migrations[i]["Name"] + "\",");
-                Reporter.WriteData("    \"safeName\": \"" + safeName + "\",");
-                Reporter.WriteData("    \"applied\": \"" + migrations[i]["Applied"] + "\"");
+                Reporter.WriteData("    \"id\": " + Json.Literal(migrations[i]["Id"]) + ",");
+                Reporter.WriteData("    \"name\": " + Json.Literal(migrations[i]["Name"]) + ",");
+                Reporter.WriteData("    \"safeName\": " + Json.Literal(safeName) + ",");
+                Reporter.WriteData("    \"isApplied\": " + Json.Literal(migrations[i]["IsApplied"]));
 
                 var line = "  }";
                 if (i != migrations.Count - 1)
@@ -62,7 +62,13 @@ namespace Microsoft.EntityFrameworkCore.Tools.Commands
             var any = false;
             foreach (var migration in migrations)
             {
-                Reporter.WriteData(migration["Id"] as string);
+                var message = migration["Id"] as string;
+                if (migration["IsApplied"] as bool? == false)
+                {
+                    message += Resources.NotApplied;
+                }
+
+                Reporter.WriteData(message);
                 any = true;
             }
 

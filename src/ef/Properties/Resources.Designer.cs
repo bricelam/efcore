@@ -433,21 +433,6 @@ namespace Microsoft.EntityFrameworkCore.Tools.Properties
                 options);
 
         /// <summary>
-        ///     Pending Migrations: {pendingMigrations}
-        /// </summary>
-        /// <param name="pendingMigrations"></param>
-        /// <returns></returns>
-        public static string PendingMigrations([CanBeNull] object pendingMigrations)
-            => string.Format(
-                GetString("PendingMigrations",nameof(pendingMigrations)),
-                pendingMigrations);
-
-        public static string PendingChanges([CanBeNull] object pendingChanges)
-            => string.Format(
-                GetString("PendingChanges", nameof(pendingChanges)),
-                pendingChanges);
-
-        /// <summary>
         ///     The language. Defaults to 'C#'.
         /// </summary>
         public static string LanguageDescription
@@ -470,6 +455,18 @@ namespace Microsoft.EntityFrameworkCore.Tools.Properties
         /// </summary>
         public static string DbContextScriptDescription
             => GetString("DbContextScriptDescription");
+
+        /// <summary>
+        ///     There are pending model changes. Add a new migration.
+        /// </summary>
+        public static string HasPendingModelChanges
+            => GetString("HasPendingModelChanges");
+
+        /// <summary>
+        ///      (Not Applied)
+        /// </summary>
+        public static string NotApplied
+            => GetString("NotApplied");
 
         private static string GetString(string name, params string[] formatterNames)
         {

@@ -179,7 +179,9 @@ namespace Microsoft.EntityFrameworkCore.Design
 
             return new Hashtable
             {
-                ["MigrationFile"] = files.MigrationFile, ["MetadataFile"] = files.MetadataFile, ["SnapshotFile"] = files.SnapshotFile
+                ["MigrationFile"] = files.MigrationFile,
+                ["MetadataFile"] = files.MetadataFile,
+                ["SnapshotFile"] = files.SnapshotFile
             };
         }
 
@@ -217,8 +219,7 @@ namespace Microsoft.EntityFrameworkCore.Design
                 ["DatabaseName"] = info.DatabaseName,
                 ["DataSource"] = info.DataSource,
                 ["Options"] = info.Options,
-                ["PendingChanges"] = info.PendingChanges,
-                ["PendingMigrations"] = info.PendingMigrations
+                ["HasPendingModelChanges"] = info.HasPendingModelChanges
             };
         }
 
@@ -337,7 +338,9 @@ namespace Microsoft.EntityFrameworkCore.Design
 
             return new Hashtable
             {
-                ["MigrationFile"] = files.MigrationFile, ["MetadataFile"] = files.MetadataFile, ["SnapshotFile"] = files.SnapshotFile
+                ["MigrationFile"] = files.MigrationFile,
+                ["MetadataFile"] = files.MetadataFile,
+                ["SnapshotFile"] = files.SnapshotFile
             };
         }
 
@@ -423,7 +426,7 @@ namespace Microsoft.EntityFrameworkCore.Design
                     ["SafeName"] = nameGroups.Count(g => g.Key == m.Name) == 1
                         ? m.Name
                         : m.Id,
-                    ["Applied"] = m.Applied
+                    ["IsApplied"] = m.IsApplied
                 });
         }
 

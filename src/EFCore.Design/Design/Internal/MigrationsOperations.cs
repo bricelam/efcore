@@ -129,7 +129,8 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
         ///     doing so can result in application failures when updating to a new Entity Framework Core release.
         /// </summary>
         public virtual IEnumerable<MigrationInfo> GetMigrations(
-            [CanBeNull] string contextType)
+            [CanBeNull] string contextType,
+            bool checkApplied)
         {
             using var context = _contextOperations.CreateContext(contextType);
             var services = _servicesBuilder.Build(context);
@@ -137,17 +138,22 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
 
             var migrationsAssembly = services.GetRequiredService<IMigrationsAssembly>();
             var idGenerator = services.GetRequiredService<IMigrationsIdGenerator>();
-                var appliedMigrations = services.GetRequiredService<IHistoryRepository>()
-                                                .GetAppliedMigrations()
-                                                .Select(x => x.MigrationId)
-                                                .ToArray(); 
+            
+            List<string> appliedMigrations = null;
+            if (checkApplied)
+            {
+                appliedMigrations = services.GetRequiredService<IHistoryRepository>()
+                                            .GetAppliedMigrations()
+                                            .Select(x => x.MigrationId)
+                                            .ToList();
+            }
 
             return from id in migrationsAssembly.Migrations.Keys
                    select new MigrationInfo
                    {
                        Id = id,
                        Name = idGenerator.GetName(id),
-                       Applied = (Array.IndexOf(appliedMigrations, id) >= 0).ToString()
+                       IsApplied = appliedMigrations?.Contains(id)
                    };
         }
 

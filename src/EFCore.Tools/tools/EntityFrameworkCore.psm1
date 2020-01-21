@@ -178,6 +178,8 @@ function Get-DbContext
        $params += GetParams $Context
        # NB: -join is here to support ConvertFrom-Json on PowerShell 3.0
        return (EF $dteProject $dteStartupProject $params) -join "`n" | ConvertFrom-Json
+
+       # TODO: Warn on pending model changes?
     }
     else
     {
@@ -684,9 +686,11 @@ function GetMigrations($context, $projectName, $startupProjectName, $returnFullM
     $project = GetProject $projectName
     $startupProject = GetStartupProject $startupProjectName $project
 
+    # TODO: Don't hit database on tab expansion
     $params = 'migrations', 'list', '--json'
     $params += GetParams $context
 
+    # TODO: Don't skip build on cmdlet
     # NB: -join is here to support ConvertFrom-Json on PowerShell 3.0
     $result = (EF $project $startupProject $params -skipBuild) -join "`n" | ConvertFrom-Json
 
@@ -700,17 +704,17 @@ function GetMigrations($context, $projectName, $startupProjectName, $returnFullM
 function WriteMigrationLine($migration, $ShowPending)
 {
     If ($ShowPending)
-    {        
-        If ($migration.applied -eq $true) {                        
+    {
+        If ($migration.IsApplied -eq $true) {
             Write-Host $migration.safeName -ForegroundColor Green
-        } 
+        }
         Else {
             Write-Host "$($migration.safeName) - Pending" -ForegroundColor Yellow
-        }        
+        }
     }
     Else
     {
-        If ($migration.applied -eq $true){
+        If ($migration.isApplied -eq $true){
             Write-Host $migration.safeName
         }
     }

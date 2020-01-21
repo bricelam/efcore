@@ -250,9 +250,11 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
             var options = context.GetService<IDbContextOptions>();
             info.Options = options.BuildOptionsFragment().Trim();
 
+            // TODO: Only if Relational
+            // TODO: False when no snapshot
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-            info.PendingChanges = modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model).ToString();            
+            info.HasPendingModelChanges = modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
 
             return info;
         }
