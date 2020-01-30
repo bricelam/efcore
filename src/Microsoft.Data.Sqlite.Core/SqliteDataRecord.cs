@@ -197,32 +197,33 @@ namespace Microsoft.Data.Sqlite
 
         public virtual long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
         {
-            var blob = GetStream(ordinal);
+            using var stream = GetStream(ordinal);
 
-            long bytesToRead = blob.Length - dataOffset;
-            if (buffer != null)
+            if (buffer == null)
             {
-                bytesToRead = Math.Min(bytesToRead, length);
-                using (var binaryReader = new BinaryReader(blob))
-                {
-                    Array.Copy(binaryReader.ReadBytes((int)blob.Length), dataOffset, buffer, bufferOffset, bytesToRead);
-                }
+                return stream.Length - dataOffset;
             }
 
-            return bytesToRead;
+            stream.Position = dataOffset;
+
+            return stream.Read(buffer, bufferOffset, length);
         }
 
         public virtual long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
         {
-            var textStream = GetStream(ordinal);
-            long charsToRead = textStream.Length - dataOffset;
+            using var stream = GetStream(ordinal);
+            using var reader = new StreamReader(stream, Encoding.UTF8);
 
-            using (var streamReader = new StreamReader(textStream, Encoding.UTF8))
+            for (var position = 0; position < dataOffset; position++)
             {
-                Array.Copy(streamReader.ReadToEnd().ToCharArray(), dataOffset, buffer, bufferOffset, Math.Min(charsToRead, length));
+                if (reader.Read() == -1)
+                {
+                    // NB: Message is provided by the framework
+                    throw new ArgumentOutOfRangeException(nameof(dataOffset), dataOffset, message: null);
+                }
             }
 
-            return charsToRead;
+            return reader.Read(buffer, bufferOffset, length);
         }
 
         public virtual Stream GetStream(int ordinal)
