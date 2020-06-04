@@ -27,12 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetTopologySuite.IO.SqlServerBytes" Version="$(NetTopologySuiteIOSqlServerBytesVersion)" />
-    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopAnalyzersVersion)" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <PackageReference Include="NetTopologySuite.IO.SqlServerBytes" />
   </ItemGroup>
 
   <ItemGroup>

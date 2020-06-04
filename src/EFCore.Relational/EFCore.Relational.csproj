@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Properties\RelationalStrings.Designer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RelationalStrings.Designer.cs</LastGenOutput>

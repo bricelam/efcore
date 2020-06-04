@@ -14,28 +14,28 @@
   <PropertyGroup Label="Arcade settings">
     <UsingToolXliff>False</UsingToolXliff>
   </PropertyGroup>
-  <PropertyGroup Label="Dependencies from nuget.org">
-    <CastleCoreVersion>4.4.1</CastleCoreVersion>
-    <MicrosoftAzureCosmosVersion>3.9.0-preview2</MicrosoftAzureCosmosVersion>
-    <MicrosoftCodeAnalysisCSharpVersion>3.3.1</MicrosoftCodeAnalysisCSharpVersion>
-    <MicrosoftCodeAnalysisCSharpWorkspacesVersion>3.3.1</MicrosoftCodeAnalysisCSharpWorkspacesVersion>
-    <mod_spatialiteVersion>4.3.0.1</mod_spatialiteVersion>
-    <NetTopologySuiteVersion>2.0.0</NetTopologySuiteVersion>
-    <NetTopologySuiteIOSpatiaLiteVersion>2.0.0</NetTopologySuiteIOSpatiaLiteVersion>
-    <NetTopologySuiteIOSqlServerBytesVersion>2.0.0</NetTopologySuiteIOSqlServerBytesVersion>
-    <SQLitePCLRawBundleESqlite3Version>2.0.3</SQLitePCLRawBundleESqlite3Version>
-    <SQLitePCLRawBundleESqlcipherVersion>2.0.3</SQLitePCLRawBundleESqlcipherVersion>
-    <SQLitePCLRawBundleWinsqlite3Version>2.0.3</SQLitePCLRawBundleWinsqlite3Version>
-    <SQLitePCLRawCoreVersion>2.0.3</SQLitePCLRawCoreVersion>
-    <IdentityServer4EntityFrameworkVersion>3.0.0</IdentityServer4EntityFrameworkVersion>
-    <FxCopAnalyzersVersion>3.0.0</FxCopAnalyzersVersion>
-    <StyleCopAnalyzersVersion>1.1.118</StyleCopAnalyzersVersion>
-    <DotNetAnalyzersDocumentationAnalyzersVersion>1.0.0-beta.59</DotNetAnalyzersDocumentationAnalyzersVersion>
-    <BenchmarkDotNetVersion>0.12.0</BenchmarkDotNetVersion>
-    <MicrosoftDataSqlClientVersion>2.0.0-preview3.20122.2</MicrosoftDataSqlClientVersion>
-    <MicrosoftCSharpVersion>4.7.0</MicrosoftCSharpVersion>
-    <NewtonsoftJsonVersion>12.0.3</NewtonsoftJsonVersion>
-  </PropertyGroup>
+  <ItemGroup Label="Dependencies from nuget.org">
+    <PackageReference Update="Castle.Core" Version="4.4.1"/>
+    <PackageReference Update="Microsoft.Azure.Cosmos" Version="3.9.0-preview2"/>
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="3.3.1"/>
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1"/>
+    <PackageReference Update="mod_spatialite" Version="4.3.0.1"/>
+    <PackageReference Update="NetTopologySuite" Version="2.0.0"/>
+    <PackageReference Update="NetTopologySuite.IO.SpatiaLite" Version="2.0.0"/>
+    <PackageReference Update="NetTopologySuite.IO.SqlServerBytes" Version="2.0.0"/>
+    <PackageReference Update="SQLitePCLRaw.bundle_e_sqlite3" Version="2.0.3"/>
+    <PackageReference Update="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.0.3"/>
+    <PackageReference Update="SQLitePCLRaw.bundle.winsqlite3" Version="2.0.3"/>
+    <PackageReference Update="SQLitePCLRaw.core" Version="2.0.3"/>
+    <PackageReference Update="IdentityServer4.EntityFramework" Version="3.0.0"/>
+    <PackageReference Update="FxCop.Analyzers" Version="3.0.0"/>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.1.118"/>
+    <PackageReference Update="DotNetAnalyzers.DocumentationAnalyzers" Version="1.0.0-beta.59"/>
+    <PackageReference Update="BenchmarkDotNet" Version="0.12.0"/>
+    <PackageReference Update="Microsoft.Data.SqlClient" Version="2.0.0-preview3.20122.2"/>
+    <PackageReference Update="Microsoft.CSharp" Version="4.7.0"/>
+    <PackageReference Update="Newtonsoft.Json" Version="12.0.3"/>
+  </ItemGroup>
   <PropertyGroup Label="Dependencies from dotnet/extensions">
     <MicrosoftExtensionsCachingMemoryVersion>5.0.0-preview.3.20215.2</MicrosoftExtensionsCachingMemoryVersion>
     <MicrosoftExtensionsConfigurationVersion>5.0.0-preview.3.20215.2</MicrosoftExtensionsConfigurationVersion>
