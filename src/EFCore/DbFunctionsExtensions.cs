@@ -65,5 +65,13 @@ namespace Microsoft.EntityFrameworkCore
 
         private static bool LikeCore(string matchExpression, string pattern, string escapeCharacter)
             => throw new InvalidOperationException(CoreStrings.FunctionOnClient(nameof(Like)));
+
+        /// <summary>
+        ///     Returns a random floating-point number between 0 and 1.
+        /// </summary>
+        /// <param name="_">The DbFunctions instance.</param>
+        /// <returns>A random floating-point number between 0 and 1.</returns>
+        public static double Random([CanBeNull] this DbFunctions _)
+            => throw new InvalidOperationException(CoreStrings.FunctionOnClient(nameof(Random)));
     }
 }
