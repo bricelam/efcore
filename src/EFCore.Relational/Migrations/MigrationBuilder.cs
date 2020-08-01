@@ -153,7 +153,9 @@ namespace Microsoft.EntityFrameworkCore.Migrations
                 principalTable,
                 schema,
                 principalSchema,
-                new[] { principalColumn },
+                principalColumn != null
+                    ? new[] { principalColumn }
+                    : null,
                 onUpdate,
                 onDelete);
 

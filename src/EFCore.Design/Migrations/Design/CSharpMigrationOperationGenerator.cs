@@ -284,17 +284,20 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Design
                     .Append(Code.Literal(operation.PrincipalTable))
                     .AppendLine(",");
 
-                if (operation.PrincipalColumns.Length == 1)
+                if (operation.PrincipalColumns != null)
                 {
-                    builder
-                        .Append("principalColumn: ")
-                        .Append(Code.Literal(operation.PrincipalColumns[0]));
-                }
-                else
-                {
-                    builder
-                        .Append("principalColumns: ")
-                        .Append(Code.Literal(operation.PrincipalColumns));
+                    if (operation.PrincipalColumns.Length == 1)
+                    {
+                        builder
+                            .Append("principalColumn: ")
+                            .Append(Code.Literal(operation.PrincipalColumns[0]));
+                    }
+                    else
+                    {
+                        builder
+                            .Append("principalColumns: ")
+                            .Append(Code.Literal(operation.PrincipalColumns));
+                    }
                 }
 
                 if (operation.OnUpdate != ReferentialAction.NoAction)
@@ -1309,17 +1312,24 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Design
                                 .Append(Code.Literal(foreignKey.PrincipalTable))
                                 .AppendLine(",");
 
-                            if (foreignKey.PrincipalColumns.Length == 1)
+                            if (foreignKey.PrincipalColumns != null)
                             {
-                                builder
-                                    .Append("principalColumn: ")
-                                    .Append(Code.Literal(foreignKey.PrincipalColumns[0]));
+                                if (foreignKey.PrincipalColumns.Length == 1)
+                                {
+                                    builder
+                                        .Append("principalColumn: ")
+                                        .Append(Code.Literal(foreignKey.PrincipalColumns[0]));
+                                }
+                                else
+                                {
+                                    builder
+                                        .Append("principalColumns: ")
+                                        .Append(Code.Literal(foreignKey.PrincipalColumns));
+                                }
                             }
-                            else
+                            else if (foreignKey.Columns.Length != 1)
                             {
-                                builder
-                                    .Append("principalColumns: ")
-                                    .Append(Code.Literal(foreignKey.PrincipalColumns));
+                                builder.Append("principalColumns: null");
                             }
 
                             if (foreignKey.OnUpdate != ReferentialAction.NoAction)

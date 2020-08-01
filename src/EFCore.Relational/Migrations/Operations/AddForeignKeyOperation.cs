@@ -49,7 +49,7 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Operations
         /// <summary>
         ///     The ordered-list of column names for the columns to which the columns that make up this foreign key are constrained.
         /// </summary>
-        public virtual string[] PrincipalColumns { get; [param: NotNull] set; }
+        public virtual string[] PrincipalColumns { get; [param: CanBeNull] set; }
 
         /// <summary>
         ///     The <see cref="ReferentialAction" /> to use for updates.
