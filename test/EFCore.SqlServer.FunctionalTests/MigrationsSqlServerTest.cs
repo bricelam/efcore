@@ -491,6 +491,35 @@ IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [People] DROP CONSTRAINT [' + @var0 + ']
 ALTER TABLE [People] ALTER COLUMN [SomeColumn] bigint NOT NULL;");
         }
 
+        [ConditionalFact]
+        public virtual async Task Alter_column_change_type_with_referencing_fk()
+        {
+            await Test(
+                builder => builder
+                    .Entity("Blog", x =>
+                    {
+                        x.Property<string>("Id");
+                        x.HasKey("Id");
+                    })
+                    .Entity("Post", x =>
+                    {
+                        x.Property<string>("Id");
+                        x.HasKey("Id");
+                        x.HasOne("Blog", "Blog").WithMany("Posts");
+                    }),
+                builder => builder.Entity("Blog").Property<string>("Id").HasMaxLength(10),
+                builder => builder.Entity("Blog").Property<string>("Id").HasMaxLength(100),
+                model =>
+                {
+                    var table = Assert.Single(model.Tables.Where(t => t.Name == "Blog"));
+                    var column = Assert.Single(table.Columns, c => c.Name == "Id");
+                    Assert.Equal("nvarchar(100)", column.StoreType);
+                });
+
+            AssertSql(
+                @"");
+        }
+
         public override async Task Alter_column_make_required()
         {
             await base.Alter_column_make_required();
