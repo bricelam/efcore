@@ -1,6 +1,14 @@
 <Project>
   <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
+  <ItemGroup>
+    <KnownFrameworkReference Update="Microsoft.NETCore.App">
+      <LatestRuntimeFrameworkVersion Condition="'%(TargetFramework)' == 'net6.0'">$(MicrosoftNETCoreAppRuntimewinx64PackageVersion)</LatestRuntimeFrameworkVersion>
+      <DefaultRuntimeFrameworkVersion Condition="'%(TargetFramework)' == 'net6.0' and '$(IsServicingBuild)' != 'true'">$(MicrosoftNETCoreAppRuntimewinx64PackageVersion)</DefaultRuntimeFrameworkVersion>
+      <TargetingPackVersion Condition="'%(TargetFramework)' == 'net6.0' and '$(IsServicingBuild)' != 'true'">$(MicrosoftNETCoreAppRefPackageVersion)</TargetingPackVersion>
+    </KnownFrameworkReference>
+  </ItemGroup>
+
   <Target Name="GetCustomAssemblyAttributes"
           BeforeTargets="GetAssemblyAttributes"
           Condition=" '$(MSBuildProjectExtension)' == '.csproj' "

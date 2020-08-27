@@ -27,6 +27,8 @@
     <MicrosoftExtensionsDependencyModelVersion>6.0.0-alpha.1.20606.6</MicrosoftExtensionsDependencyModelVersion>
     <MicrosoftExtensionsHostFactoryResolverSourcesVersion>6.0.0-alpha.1.20606.6</MicrosoftExtensionsHostFactoryResolverSourcesVersion>
     <MicrosoftExtensionsLoggingVersion>6.0.0-alpha.1.20606.6</MicrosoftExtensionsLoggingVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>6.0.0-alpha.1.20606.6</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftNETCoreAppRuntimewinx64PackageVersion>6.0.0-alpha.1.20606.6</MicrosoftNETCoreAppRuntimewinx64PackageVersion>
   </PropertyGroup>
   <PropertyGroup Label="Other dependencies">
     <MicrosoftCodeAnalysisVersion>3.7.0</MicrosoftCodeAnalysisVersion>
