@@ -63,6 +63,21 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
         }
 
         [ConditionalFact]
+        public void CreateContext_falls_back_to_parameterless_ctor_when_missing_services()
+        {
+            var assembly = MockAssembly.Create(typeof(UnknownServiceContext));
+            var operations = new TestDbContextOperations(
+                new TestOperationReporter(),
+                assembly,
+                assembly,
+                args: Array.Empty<string>(),
+                new TestAppServiceProviderFactory(assembly));
+
+            var context = operations.CreateContext(nameof(UnknownServiceContext));
+            Assert.NotNull(context);
+        }
+
+        [ConditionalFact]
         public void GetContextInfo_returns_correct_info()
         {
             var info = CreateOperations(typeof(TestProgramRelational)).GetContextInfo(nameof(TestContext));
@@ -219,6 +234,24 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
 
             DerivedContext IDesignTimeDbContextFactory<DerivedContext>.CreateDbContext(string[] args)
                 => new DerivedContext(nameof(DerivedContext));
+        }
+
+        private interface IUnknownService
+        {
+        }
+
+        private class UnknownServiceContext : DbContext
+        {
+            public UnknownServiceContext(IUnknownService unknownService)
+            {
+            }
+
+            public UnknownServiceContext()
+            {
+            }
+
+            protected override void OnConfiguring(DbContextOptionsBuilder options)
+                => options.UseInMemoryDatabase(nameof(UnknownServiceContext));
         }
     }
 }

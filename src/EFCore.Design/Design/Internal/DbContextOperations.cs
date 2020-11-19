@@ -212,6 +212,16 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
                         }
                         catch (Exception ex)
                         {
+                            _reporter.WriteVerbose(ex.ToString());
+                            _reporter.WriteWarning(DesignStrings.CreateInstanceFailed(ex.Message));
+                        }
+
+                        try
+                        {
+                            return (DbContext)Activator.CreateInstance(context);
+                        }
+                        catch (MissingMethodException ex)
+                        {
                             throw new OperationException(DesignStrings.NoParameterlessConstructor(context.Name), ex);
                         }
                     }));
