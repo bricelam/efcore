@@ -35,6 +35,7 @@ namespace Microsoft.Data.Sqlite
             string columnName,
             long rowid,
             bool readOnly = false)
+            // TODO: Avoid conversion to utf8z?
             : this(connection, SqliteConnection.MainDatabaseName, tableName, columnName, rowid, readOnly)
         {
         }
@@ -183,6 +184,7 @@ namespace Microsoft.Data.Sqlite
                 count = (int)(Length - position);
             }
 
+            // TODO: Add upstream Span overloads?
             var rc = sqlite3_blob_read(_blob, buffer.AsSpan(offset, count), (int)position);
             SqliteException.ThrowExceptionForRC(rc, _db);
             _position += count;
@@ -240,6 +242,7 @@ namespace Microsoft.Data.Sqlite
                 throw new NotSupportedException(Resources.ResizeNotSupported);
             }
 
+            // TODO: Add upstream Span overloads?
             var rc = sqlite3_blob_write(_blob, buffer.AsSpan(offset, count), (int)position);
             SqliteException.ThrowExceptionForRC(rc, _db);
             _position += count;

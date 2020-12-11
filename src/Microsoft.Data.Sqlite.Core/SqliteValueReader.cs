@@ -141,6 +141,7 @@ namespace Microsoft.Data.Sqlite
             var type = typeof(T).UnwrapNullableType().UnwrapEnumType();
             if (type == typeof(bool))
             {
+                // TODO: Avoid boxing
                 return (T)(object)GetBoolean(ordinal);
             }
 
@@ -240,6 +241,7 @@ namespace Microsoft.Data.Sqlite
                 return (T)(object)checked((ushort)GetInt64(ordinal));
             }
 
+            // TODO: Allow utf8z and ReadOnlySpan<byte>?
             return (T)GetValue(ordinal)!;
         }
 

@@ -26,7 +26,7 @@ namespace Microsoft.Data.Sqlite
 
         private const string DataDirectoryMacro = "|DataDirectory|";
 
-        private readonly List<WeakReference<SqliteCommand>> _commands = new();
+        internal SqliteStatementPool? StatementPool { get; private set; }
 
         private Dictionary<string, (object? state, strdelegate_collation? collation)>? _collations;
 
@@ -175,7 +175,7 @@ namespace Microsoft.Data.Sqlite
 
             var filename = ConnectionOptions.DataSource;
             var flags = 0;
-            
+
             if (sqlite3_threadsafe() != 0)
             {
                 flags |= SQLITE_OPEN_NOMUTEX;
@@ -249,6 +249,7 @@ namespace Microsoft.Data.Sqlite
             var rc = sqlite3_open_v2(filename, out _db, flags, vfs: null);
             SqliteException.ThrowExceptionForRC(rc, _db);
 
+            StatementPool = new(_db);
             _state = ConnectionState.Open;
             try
             {
@@ -334,6 +335,9 @@ namespace Microsoft.Data.Sqlite
             }
             catch
             {
+                StatementPool.Dispose();
+                StatementPool = null;
+
                 _db.Dispose();
                 _db = null;
 
@@ -357,21 +361,9 @@ namespace Microsoft.Data.Sqlite
 
             Transaction?.Dispose();
 
-            for (var i = _commands.Count - 1; i >= 0; i--)
-            {
-                var reference = _commands[i];
-                if (reference.TryGetTarget(out var command))
-                {
-                    // NB: Calls RemoveCommand()
-                    command.Dispose();
-                }
-                else
-                {
-                    _commands.RemoveAt(i);
-                }
-            }
-
-            Debug.Assert(_commands.Count == 0);
+            // TODO: Dispose open readers
+            StatementPool!.Dispose();
+            StatementPool = null;
 
             _db!.Dispose();
             _db = null;
@@ -409,7 +401,6 @@ namespace Microsoft.Data.Sqlite
             => new()
             {
                 Connection = this,
-                CommandTimeout = DefaultTimeout,
                 Transaction = Transaction
             };
 
@@ -419,21 +410,6 @@ namespace Microsoft.Data.Sqlite
         /// <returns>The new command.</returns>
         protected override DbCommand CreateDbCommand()
             => CreateCommand();
-
-        internal void AddCommand(SqliteCommand command)
-            => _commands.Add(new WeakReference<SqliteCommand>(command));
-
-        internal void RemoveCommand(SqliteCommand command)
-        {
-            for (var i = _commands.Count - 1; i >= 0; i--)
-            {
-                if (_commands[i].TryGetTarget(out var item)
-                    && item == command)
-                {
-                    _commands.RemoveAt(i);
-                }
-            }
-        }
 
         /// <summary>
         ///     Create custom collation.

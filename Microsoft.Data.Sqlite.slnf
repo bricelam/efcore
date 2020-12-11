@@ -2,6 +2,7 @@
   "solution": {
     "path": "All.sln",
     "projects": [
+      "benchmark\\Microsoft.Data.Sqlite.Benchmarks\\Microsoft.Data.Sqlite.Benchmarks.csproj",
       "src\\Microsoft.Data.Sqlite.Core\\Microsoft.Data.Sqlite.Core.csproj",
       "src\\Microsoft.Data.Sqlite\\Microsoft.Data.Sqlite.csproj",
       "test\\Microsoft.Data.Sqlite.Tests\\Microsoft.Data.Sqlite.Tests.csproj",

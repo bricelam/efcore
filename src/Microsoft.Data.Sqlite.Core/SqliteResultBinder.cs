@@ -17,6 +17,7 @@ namespace Microsoft.Data.Sqlite
         }
 
         protected override void BindBlob(byte[] value)
+            // TODO: Upstream Span overloads?
             => sqlite3_result_blob(_ctx, value);
 
         protected override void BindDoubleCore(double value)
@@ -29,6 +30,7 @@ namespace Microsoft.Data.Sqlite
             => sqlite3_result_null(_ctx);
 
         protected override void BindText(string value)
+            // TODO: Upstream utf8z overloads?
             => sqlite3_result_text(_ctx, value);
     }
 }

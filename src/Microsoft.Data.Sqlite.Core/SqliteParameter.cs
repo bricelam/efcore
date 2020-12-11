@@ -210,6 +210,7 @@ namespace Microsoft.Data.Sqlite
                 throw new InvalidOperationException(Resources.RequiresSet(nameof(ParameterName)));
             }
 
+            // TODO: Cache conversion to utf8z?
             var index = sqlite3_bind_parameter_index(stmt, ParameterName);
             if (index == 0
                 && (index = FindPrefixedParameter(stmt)) == 0)

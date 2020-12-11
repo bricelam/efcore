@@ -30,6 +30,7 @@ namespace Microsoft.Data.Sqlite
                 Array.Copy(value, blob, _size.Value);
             }
 
+            // TODO: Upstream Span overloads?
             sqlite3_bind_blob(_stmt, _index, blob);
         }
 
@@ -43,6 +44,7 @@ namespace Microsoft.Data.Sqlite
             => sqlite3_bind_null(_stmt, _index);
 
         protected override void BindText(string value)
+            // TODO: Upstream utf8z overloads?
             => sqlite3_bind_text(
                 _stmt,
                 _index,
