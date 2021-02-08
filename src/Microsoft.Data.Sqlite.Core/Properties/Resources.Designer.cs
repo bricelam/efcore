@@ -173,20 +173,6 @@ namespace Microsoft.Data.Sqlite.Properties
             => GetString("CannotStoreNaN");
 
         /// <summary>
-        /// An open reader is already associated with this command. Close it before opening a new one.
-        /// </summary>
-        public static string DataReaderOpen
-            => GetString("DataReaderOpen");
-
-        /// <summary>
-        /// An open reader is associated with this command. Close it before changing the {propertyName} property.
-        /// </summary>
-        public static string SetRequiresNoOpenReader(object propertyName)
-            => string.Format(
-                GetString("SetRequiresNoOpenReader", nameof(propertyName)),
-                propertyName);
-
-        /// <summary>
         /// The data is NULL at ordinal {ordinal}. This method can't be called on NULL values. Check using IsDBNull before calling.
         /// </summary>
         public static string CalledOnNullValue(object ordinal)

@@ -22,22 +22,25 @@ namespace Microsoft.Data.Sqlite
     /// <seealso href="https://docs.microsoft.com/dotnet/standard/data/sqlite/types">Data Types</seealso>
     public class SqliteDataReader : DbDataReader
     {
-        private readonly SqliteCommand _command;
+        private readonly SqliteConnection _connection;
         private readonly bool _closeConnection;
         private readonly Stopwatch _timer;
-        private IEnumerator<sqlite3_stmt>? _stmtEnumerator;
+        private readonly long _timeout;
+        private IEnumerator<SqliteStatement>? _stmtEnumerator;
         private SqliteDataRecord? _record;
         private bool _closed;
         private int _recordsAffected = -1;
 
         internal SqliteDataReader(
-            SqliteCommand command,
+            SqliteConnection connection,
             Stopwatch timer,
-            IEnumerable<sqlite3_stmt> stmts,
+            long timeout,
+            IEnumerable<SqliteStatement> stmts,
             bool closeConnection)
         {
-            _command = command;
+            _connection = connection;
             _timer = timer;
+            _timeout = timeout;
             _stmtEnumerator = stmts.GetEnumerator();
             _closeConnection = closeConnection;
         }
@@ -145,7 +148,7 @@ namespace Microsoft.Data.Sqlite
                 _record = null;
             }
 
-            sqlite3_stmt stmt;
+            SqliteStatement stmt;
             int rc;
 
             while (_stmtEnumerator!.MoveNext())
@@ -156,15 +159,15 @@ namespace Microsoft.Data.Sqlite
 
                     _timer.Start();
 
-                    while (IsBusy(rc = sqlite3_step(stmt)))
+                    while (IsBusy(rc = sqlite3_step(stmt.Handle)))
                     {
-                        if (_command.CommandTimeout != 0
-                            && _timer.ElapsedMilliseconds >= _command.CommandTimeout * 1000L)
+                        if (_timeout != 0L
+                            && _timer.ElapsedMilliseconds >= _timeout)
                         {
                             break;
                         }
 
-                        sqlite3_reset(stmt);
+                        sqlite3_reset(stmt.Handle);
 
                         // TODO: Consider having an async path that uses Task.Delay()
                         Thread.Sleep(150);
@@ -172,25 +175,26 @@ namespace Microsoft.Data.Sqlite
 
                     _timer.Stop();
 
-                    SqliteException.ThrowExceptionForRC(rc, _command.Connection!.Handle);
+                    SqliteException.ThrowExceptionForRC(rc, _connection.Handle);
 
                     // It's a SELECT statement
-                    if (sqlite3_column_count(stmt) != 0)
+                    if (sqlite3_column_count(stmt.Handle) != 0)
                     {
-                        _record = new SqliteDataRecord(stmt, rc != SQLITE_DONE, _command.Connection);
+                        _record = new SqliteDataRecord(stmt, rc != SQLITE_DONE, _connection);
 
                         return true;
                     }
 
                     while (rc != SQLITE_DONE)
                     {
-                        rc = sqlite3_step(stmt);
-                        SqliteException.ThrowExceptionForRC(rc, _command.Connection.Handle);
+                        rc = sqlite3_step(stmt.Handle);
+                        SqliteException.ThrowExceptionForRC(rc, _connection.Handle);
                     }
 
-                    sqlite3_reset(stmt);
+                    //sqlite3_reset(stmt);
+                    stmt.Dispose();
 
-                    var changes = sqlite3_changes(_command.Connection.Handle);
+                    var changes = sqlite3_changes(_connection.Handle);
                     if (_recordsAffected == -1)
                     {
                         _recordsAffected = changes;
@@ -202,7 +206,7 @@ namespace Microsoft.Data.Sqlite
                 }
                 catch
                 {
-                    sqlite3_reset(_stmtEnumerator.Current);
+                    sqlite3_reset(_stmtEnumerator.Current.Handle);
                     _stmtEnumerator.Dispose();
                     _stmtEnumerator = null;
                     Dispose();
@@ -236,10 +240,11 @@ namespace Microsoft.Data.Sqlite
         {
             if (!disposing || _closed)
             {
+                // TODO: Should GC'd readers return statements?
                 return;
             }
 
-            _command.DataReader = null;
+            _connection!.RemoveDisposable(this);
 
             _record?.Dispose();
 
@@ -263,7 +268,8 @@ namespace Microsoft.Data.Sqlite
 
             if (_closeConnection)
             {
-                _command.Connection!.Close();
+                // TODO: Test when leaked
+                _connection!.Close();
             }
         }
 
@@ -671,7 +677,7 @@ namespace Microsoft.Data.Sqlite
                 schemaRow[ColumnSize] = -1;
                 schemaRow[NumericPrecision] = DBNull.Value;
                 schemaRow[NumericScale] = DBNull.Value;
-                schemaRow[BaseServerName] = _command.Connection!.DataSource;
+                schemaRow[BaseServerName] = _connection!.DataSource;
                 var databaseName = sqlite3_column_database_name(_record.Handle, i).utf8_to_string();
                 schemaRow[BaseCatalogName] = databaseName;
                 var columnName = sqlite3_column_origin_name(_record.Handle, i).utf8_to_string();
@@ -690,7 +696,7 @@ namespace Microsoft.Data.Sqlite
                 if (tableName != null
                     && columnName != null)
                 {
-                    using (var command = _command.Connection.CreateCommand())
+                    using (var command = _connection.CreateCommand())
                     {
                         command.CommandText = new StringBuilder()
                             .AppendLine("SELECT COUNT(*)")
@@ -730,9 +736,9 @@ namespace Microsoft.Data.Sqlite
                         && !eponymousVirtualTable)
                     {
                         var rc = sqlite3_table_column_metadata(
-                            _command.Connection.Handle, databaseName, tableName, columnName, out var dataType, out var collSeq,
+                            _connection.Handle, databaseName, tableName, columnName, out var dataType, out var collSeq,
                             out var notNull, out var primaryKey, out var autoInc);
-                        SqliteException.ThrowExceptionForRC(rc, _command.Connection.Handle);
+                        SqliteException.ThrowExceptionForRC(rc, _connection.Handle);
 
                         schemaRow[IsKey] = primaryKey != 0;
                         schemaRow[AllowDBNull] = notNull == 0;

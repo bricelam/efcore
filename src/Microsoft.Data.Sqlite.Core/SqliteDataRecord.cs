@@ -14,15 +14,16 @@ namespace Microsoft.Data.Sqlite
 {
     internal class SqliteDataRecord : SqliteValueReader, IDisposable
     {
+        private readonly SqliteStatement _statement;
         private readonly SqliteConnection _connection;
         private byte[][]? _blobCache;
         private int?[]? _typeCache;
         private bool _stepped;
         private int? _rowidOrdinal;
 
-        public SqliteDataRecord(sqlite3_stmt stmt, bool hasRows, SqliteConnection connection)
+        public SqliteDataRecord(SqliteStatement stmt, bool hasRows, SqliteConnection connection)
         {
-            Handle = stmt;
+            _statement = stmt;
             HasRows = hasRows;
             _connection = connection;
         }
@@ -36,7 +37,8 @@ namespace Microsoft.Data.Sqlite
         public override int FieldCount
             => sqlite3_column_count(Handle);
 
-        public sqlite3_stmt Handle { get; }
+        public sqlite3_stmt Handle
+            => _statement.Handle;
 
         public bool HasRows { get; }
 
@@ -375,7 +377,7 @@ namespace Microsoft.Data.Sqlite
         }
 
         public void Dispose()
-            => sqlite3_reset(Handle);
+            => _statement.Dispose();
 
         private byte[] GetCachedBlob(int ordinal)
         {

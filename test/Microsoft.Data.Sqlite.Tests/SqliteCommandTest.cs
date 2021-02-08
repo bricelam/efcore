@@ -53,7 +53,7 @@ namespace Microsoft.Data.Sqlite
         }
 
         [Fact]
-        public void CommandText_throws_when_set_when_open_reader()
+        public void CommandText_works_when_set_when_open_reader()
         {
             using (var connection = new SqliteConnection("Data Source=:memory:"))
             {
@@ -64,11 +64,11 @@ namespace Microsoft.Data.Sqlite
 
                 using (var reader = command.ExecuteReader())
                 {
+                    command.CommandText = "SELECT 2;";
+
                     reader.Read();
-
-                    var ex = Assert.Throws<InvalidOperationException>(() => command.CommandText = "SELECT 2;");
-
-                    Assert.Equal(Resources.SetRequiresNoOpenReader("CommandText"), ex.Message);
+                    
+                    Assert.Equal(1L, reader[0]);
                 }
             }
         }
@@ -138,7 +138,7 @@ namespace Microsoft.Data.Sqlite
         }
 
         [Fact]
-        public void Connection_throws_when_set_when_open_reader()
+        public void Connection_works_when_set_when_open_reader()
         {
             using (var connection = new SqliteConnection("Data Source=:memory:"))
             {
@@ -149,11 +149,11 @@ namespace Microsoft.Data.Sqlite
 
                 using (var reader = command.ExecuteReader())
                 {
+                    command.Connection = new SqliteConnection();
+
                     reader.Read();
-
-                    var ex = Assert.Throws<InvalidOperationException>(() => command.Connection = new SqliteConnection());
-
-                    Assert.Equal(Resources.SetRequiresNoOpenReader("Connection"), ex.Message);
+                    
+                    Assert.Equal(1L, reader[0]);
                 }
             }
         }
@@ -511,7 +511,7 @@ namespace Microsoft.Data.Sqlite
         }
 
         [Fact]
-        public void ExecuteReader_throws_when_reader_open()
+        public void ExecuteReader_works_when_reader_open()
         {
             using (var connection = new SqliteConnection("Data Source=:memory:"))
             {
@@ -519,10 +519,14 @@ namespace Microsoft.Data.Sqlite
                 command.CommandText = "SELECT 1;";
                 connection.Open();
 
-                using (var reader = command.ExecuteReader())
+                using (var reader1 = command.ExecuteReader())
+                using (var reader2 = command.ExecuteReader())
                 {
-                    var ex = Assert.Throws<InvalidOperationException>(() => command.ExecuteReader());
-                    Assert.Equal(Resources.DataReaderOpen, ex.Message);
+                    Assert.True(reader1.Read());
+                    Assert.Equal(1L, reader1[0]);
+
+                    Assert.True(reader2.Read());
+                    Assert.Equal(1L, reader2[0]);
                 }
             }
         }

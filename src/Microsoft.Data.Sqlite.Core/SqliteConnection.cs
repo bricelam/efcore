@@ -26,7 +26,7 @@ namespace Microsoft.Data.Sqlite
 
         private const string DataDirectoryMacro = "|DataDirectory|";
 
-        private readonly List<WeakReference<SqliteCommand>> _commands = new();
+        private readonly List<WeakReference<IDisposable>> _disposables = new();
 
         private Dictionary<string, (object? state, strdelegate_collation? collation)>? _collations;
 
@@ -161,6 +161,8 @@ namespace Microsoft.Data.Sqlite
         /// <value>The transaction currently being used by the connection.</value>
         protected internal virtual SqliteTransaction? Transaction { get; set; }
 
+        internal SqliteStatementFactory? StatementFactory { get; private set; }
+
         /// <summary>
         ///     Opens a connection to the database using the value of <see cref="ConnectionString" />. If
         ///     <c>Mode=ReadWriteCreate</c> is used (the default) the file is created, if it doesn't already exist.
@@ -175,7 +177,7 @@ namespace Microsoft.Data.Sqlite
 
             var filename = ConnectionOptions.DataSource;
             var flags = 0;
-            
+
             if (sqlite3_threadsafe() != 0)
             {
                 flags |= SQLITE_OPEN_NOMUTEX;
@@ -249,6 +251,7 @@ namespace Microsoft.Data.Sqlite
             var rc = sqlite3_open_v2(filename, out _db, flags, vfs: null);
             SqliteException.ThrowExceptionForRC(rc, _db);
 
+            StatementFactory = new SqliteStatementFactory(_db);
             _state = ConnectionState.Open;
             try
             {
@@ -334,6 +337,9 @@ namespace Microsoft.Data.Sqlite
             }
             catch
             {
+                StatementFactory.Dispose();
+                StatementFactory = null;
+
                 _db.Dispose();
                 _db = null;
 
@@ -357,21 +363,24 @@ namespace Microsoft.Data.Sqlite
 
             Transaction?.Dispose();
 
-            for (var i = _commands.Count - 1; i >= 0; i--)
+            for (var i = _disposables.Count - 1; i >= 0; i--)
             {
-                var reference = _commands[i];
-                if (reference.TryGetTarget(out var command))
+                var reference = _disposables[i];
+                if (reference.TryGetTarget(out var disposable))
                 {
-                    // NB: Calls RemoveCommand()
-                    command.Dispose();
+                    // NB: Calls RemoveDisposable()
+                    disposable.Dispose();
                 }
                 else
                 {
-                    _commands.RemoveAt(i);
+                    _disposables.RemoveAt(i);
                 }
             }
 
-            Debug.Assert(_commands.Count == 0);
+            Debug.Assert(_disposables.Count == 0);
+
+            StatementFactory!.Dispose();
+            StatementFactory = null;
 
             _db!.Dispose();
             _db = null;
@@ -409,7 +418,6 @@ namespace Microsoft.Data.Sqlite
             => new()
             {
                 Connection = this,
-                CommandTimeout = DefaultTimeout,
                 Transaction = Transaction
             };
 
@@ -420,17 +428,17 @@ namespace Microsoft.Data.Sqlite
         protected override DbCommand CreateDbCommand()
             => CreateCommand();
 
-        internal void AddCommand(SqliteCommand command)
-            => _commands.Add(new WeakReference<SqliteCommand>(command));
+        internal void AddDisposable(IDisposable disposable)
+            => _disposables.Add(new WeakReference<IDisposable>(disposable));
 
-        internal void RemoveCommand(SqliteCommand command)
+        internal void RemoveDisposable(IDisposable disposable)
         {
-            for (var i = _commands.Count - 1; i >= 0; i--)
+            for (var i = _disposables.Count - 1; i >= 0; i--)
             {
-                if (_commands[i].TryGetTarget(out var item)
-                    && item == command)
+                if (!_disposables[i].TryGetTarget(out var item)
+                    || item == disposable)
                 {
-                    _commands.RemoveAt(i);
+                    _disposables.RemoveAt(i);
                 }
             }
         }
