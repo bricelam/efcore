@@ -711,7 +711,52 @@ namespace Microsoft.Data.Sqlite
                     Rows =
                     {
                         new object[] { DbMetaDataCollectionNames.MetaDataCollections, 0, 0 },
+                        new object[] { DbMetaDataCollectionNames.DataSourceInformation, 0, 0 },
+                        new object[] { DbMetaDataCollectionNames.DataTypes, 0, 0 },
                         new object[] { DbMetaDataCollectionNames.ReservedWords, 0, 0 }
+                    }
+                };
+            }
+            else if (string.Equals(collectionName, DbMetaDataCollectionNames.DataSourceInformation, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DataTable(DbMetaDataCollectionNames.DataSourceInformation)
+                {
+                    Columns =
+                    {
+                        { DbMetaDataColumnNames.CompositeIdentifierSeparatorPattern },
+                        { DbMetaDataColumnNames.IdentifierCase, typeof(IdentifierCase) },
+                        { DbMetaDataColumnNames.QuotedIdentifierCase, typeof(IdentifierCase) },
+                        { DbMetaDataColumnNames.SupportedJoinOperators, typeof(SupportedJoinOperators) }
+                    },
+                    Rows =
+                    {
+                        new object[]
+                        {
+                            @"\.",
+                            IdentifierCase.Insensitive,
+                            IdentifierCase.Insensitive,
+                            SupportedJoinOperators.Inner | SupportedJoinOperators.LeftOuter
+                        }
+                    }
+                };
+            }
+            else if (string.Equals(collectionName, DbMetaDataCollectionNames.DataTypes, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DataTable(DbMetaDataCollectionNames.DataTypes)
+                {
+                    Columns =
+                    {
+                        { DbMetaDataColumnNames.TypeName },
+                        { DbMetaDataColumnNames.ProviderDbType, typeof(int) },
+                        { DbMetaDataColumnNames.DataType },
+                        { DbMetaDataColumnNames.IsFixedLength, typeof(bool) }
+                    },
+                    Rows =
+                    {
+                        new object[] { "INTEGER", (int)SqliteType.Integer, typeof(long).FullName!, true },
+                        new object[] { "REAL", (int)SqliteType.Real, typeof(double).FullName!, true },
+                        new object[] { "TEXT", (int)SqliteType.Text, typeof(string).FullName!, false },
+                        new object[] { "BLOB", (int)SqliteType.Blob, typeof(byte[]).FullName!, false }
                     }
                 };
             }
