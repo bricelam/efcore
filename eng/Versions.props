@@ -25,7 +25,4 @@
     <MicrosoftExtensionsHostFactoryResolverSourcesVersion>7.0.0-preview.5.22258.4</MicrosoftExtensionsHostFactoryResolverSourcesVersion>
     <MicrosoftExtensionsLoggingVersion>7.0.0-preview.5.22258.4</MicrosoftExtensionsLoggingVersion>
   </PropertyGroup>
-  <PropertyGroup Label="Other dependencies">
-    <MicrosoftCodeAnalysisVersion>4.1.0</MicrosoftCodeAnalysisVersion>
-  </PropertyGroup>
 </Project>

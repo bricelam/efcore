@@ -56,8 +56,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetTopologySuite" Version="2.4.0" />
-    <PackageReference Include="NetTopologySuite.IO.SqlServerBytes" Version="2.1.0" />
+    <PackageReference Include="NetTopologySuite" />
+    <PackageReference Include="NetTopologySuite.IO.SqlServerBytes" />
   </ItemGroup>
 
   <ItemGroup>
