@@ -85,7 +85,7 @@ public static class RelationalQueryableExtensions
     [StringFormatMethod("sql")]
     public static IQueryable<TEntity> FromSqlRaw<TEntity>(
         this DbSet<TEntity> source,
-        [NotParameterized] string sql,
+        [NotParameterized, LanguageInjection(InjectedLanguage.SQL)] string sql,
         params object[] parameters)
         where TEntity : class
     {
@@ -126,7 +126,7 @@ public static class RelationalQueryableExtensions
     /// <returns>An <see cref="IQueryable{T}" /> representing the interpolated string SQL query.</returns>
     public static IQueryable<TEntity> FromSqlInterpolated<TEntity>(
         this DbSet<TEntity> source,
-        [NotParameterized] FormattableString sql)
+        [NotParameterized, LanguageInjection(InjectedLanguage.SQL)] FormattableString sql)
         where TEntity : class
     {
         Check.NotNull(sql, nameof(sql));

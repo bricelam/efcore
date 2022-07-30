@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 // ReSharper disable once CheckNamespace
@@ -839,7 +840,7 @@ public static partial class RelationalEntityTypeBuilderExtensions
     public static EntityTypeBuilder<TEntity> HasCheckConstraint<TEntity>(
         this EntityTypeBuilder<TEntity> entityTypeBuilder,
         string name,
-        string? sql)
+        [LanguageInjection(InjectedLanguage.SQL)] string? sql)
         where TEntity : class
         => (EntityTypeBuilder<TEntity>)HasCheckConstraint((EntityTypeBuilder)entityTypeBuilder, name, sql);
 
@@ -858,7 +859,7 @@ public static partial class RelationalEntityTypeBuilderExtensions
     public static EntityTypeBuilder<TEntity> HasCheckConstraint<TEntity>(
         this EntityTypeBuilder<TEntity> entityTypeBuilder,
         string name,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         Action<CheckConstraintBuilder> buildAction)
         where TEntity : class
         => (EntityTypeBuilder<TEntity>)HasCheckConstraint((EntityTypeBuilder)entityTypeBuilder, name, sql, buildAction);
@@ -902,7 +903,7 @@ public static partial class RelationalEntityTypeBuilderExtensions
     public static OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> HasCheckConstraint<TOwnerEntity, TDependentEntity>(
         this OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> ownedNavigationBuilder,
         string name,
-        string? sql)
+        [LanguageInjection(InjectedLanguage.SQL)] string? sql)
         where TOwnerEntity : class
         where TDependentEntity : class
         => (OwnedNavigationBuilder<TOwnerEntity, TDependentEntity>)
@@ -951,7 +952,7 @@ public static partial class RelationalEntityTypeBuilderExtensions
     public static OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> HasCheckConstraint<TOwnerEntity, TDependentEntity>(
         this OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> ownedNavigationBuilder,
         string name,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         Action<CheckConstraintBuilder> buildAction)
         where TOwnerEntity : class
         where TDependentEntity : class

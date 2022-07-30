@@ -78,7 +78,7 @@ public static class CosmosQueryableExtensions
     [StringFormatMethod("sql")]
     public static IQueryable<TEntity> FromSqlRaw<TEntity>(
         this DbSet<TEntity> source,
-        [NotParameterized] string sql,
+        [NotParameterized, LanguageInjection(InjectedLanguage.SQL)] string sql,
         params object[] parameters)
         where TEntity : class
     {

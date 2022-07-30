@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 // ReSharper disable once CheckNamespace
+using JetBrains.Annotations;
+
 namespace Microsoft.EntityFrameworkCore;
 
 /// <summary>
@@ -132,7 +134,7 @@ public static class RelationalIndexBuilderExtensions
     /// <param name="indexBuilder">The builder for the index being configured.</param>
     /// <param name="sql">The filter expression for the index.</param>
     /// <returns>A builder to further configure the index.</returns>
-    public static IndexBuilder<TEntity> HasFilter<TEntity>(this IndexBuilder<TEntity> indexBuilder, string? sql)
+    public static IndexBuilder<TEntity> HasFilter<TEntity>(this IndexBuilder<TEntity> indexBuilder, [LanguageInjection(InjectedLanguage.SQL)] string? sql)
         => (IndexBuilder<TEntity>)HasFilter((IndexBuilder)indexBuilder, sql);
 
     /// <summary>

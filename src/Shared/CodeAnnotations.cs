@@ -95,3 +95,27 @@ internal enum ImplicitUseTargetFlags
     Members = 2,
     WithMembers = Itself | Members
 }
+
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
+internal sealed class LanguageInjectionAttribute : Attribute
+{
+    public LanguageInjectionAttribute(InjectedLanguage injectedLanguage)
+    {
+        InjectedLanguage = injectedLanguage;
+    }
+
+    public InjectedLanguage InjectedLanguage { get; }
+    public string Prefix { get; set; }
+    public string Suffix { get; set; }
+}
+
+internal enum InjectedLanguage
+{
+    CSS,
+    HTML,
+    JAVASCRIPT,
+    JSON,
+    REGEXP,
+    SQL,
+    XML
+}

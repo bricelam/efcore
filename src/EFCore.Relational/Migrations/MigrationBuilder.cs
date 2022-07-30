@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 namespace Microsoft.EntityFrameworkCore.Migrations;
@@ -1266,7 +1267,7 @@ public class MigrationBuilder
     /// </param>
     /// <returns>A builder to allow annotations to be added to the operation.</returns>
     public virtual OperationBuilder<SqlOperation> Sql(
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         bool suppressTransaction = false)
     {
         Check.NotEmpty(sql, nameof(sql));

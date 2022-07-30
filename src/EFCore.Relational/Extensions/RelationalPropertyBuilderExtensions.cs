@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Data;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 // ReSharper disable once CheckNamespace
@@ -482,7 +483,7 @@ public static class RelationalPropertyBuilderExtensions
     /// <returns>The same builder instance so that multiple calls can be chained.</returns>
     public static PropertyBuilder<TProperty> HasDefaultValueSql<TProperty>(
         this PropertyBuilder<TProperty> propertyBuilder,
-        string? sql)
+        [LanguageInjection(InjectedLanguage.SQL)] string? sql)
         => (PropertyBuilder<TProperty>)HasDefaultValueSql((PropertyBuilder)propertyBuilder, sql);
 
     /// <summary>
@@ -630,7 +631,7 @@ public static class RelationalPropertyBuilderExtensions
     /// <returns>The same builder instance so that multiple calls can be chained.</returns>
     public static PropertyBuilder<TProperty> HasComputedColumnSql<TProperty>(
         this PropertyBuilder<TProperty> propertyBuilder,
-        string? sql)
+        [LanguageInjection(InjectedLanguage.SQL)] string? sql)
         => HasComputedColumnSql(propertyBuilder, sql, null);
 
     /// <summary>
@@ -650,7 +651,7 @@ public static class RelationalPropertyBuilderExtensions
     /// <returns>The same builder instance so that multiple calls can be chained.</returns>
     public static PropertyBuilder<TProperty> HasComputedColumnSql<TProperty>(
         this PropertyBuilder<TProperty> propertyBuilder,
-        string? sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string? sql,
         bool? stored)
         => (PropertyBuilder<TProperty>)HasComputedColumnSql((PropertyBuilder)propertyBuilder, sql, stored);
 

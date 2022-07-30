@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Data;
+using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.EntityFrameworkCore;
@@ -152,9 +153,10 @@ public static class RelationalDatabaseFacadeExtensions
     /// <param name="sql">The SQL to execute.</param>
     /// <param name="parameters">Parameters to use with the SQL.</param>
     /// <returns>The number of rows affected.</returns>
+    [StringFormatMethod("sql")]
     public static int ExecuteSqlRaw(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         params object[] parameters)
         => ExecuteSqlRaw(databaseFacade, sql, (IEnumerable<object>)parameters);
 
@@ -187,7 +189,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <returns>The number of rows affected.</returns>
     public static int ExecuteSqlInterpolated(
         this DatabaseFacade databaseFacade,
-        FormattableString sql)
+        [LanguageInjection(InjectedLanguage.SQL)] FormattableString sql)
         => ExecuteSqlRaw(databaseFacade, sql.Format, sql.GetArguments()!);
 
     /// <summary>
@@ -223,9 +225,10 @@ public static class RelationalDatabaseFacadeExtensions
     /// <param name="sql">The SQL to execute.</param>
     /// <param name="parameters">Parameters to use with the SQL.</param>
     /// <returns>The number of rows affected.</returns>
+    [StringFormatMethod("sql")]
     public static int ExecuteSqlRaw(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         IEnumerable<object> parameters)
     {
         Check.NotNull(sql, nameof(sql));
@@ -293,7 +296,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     public static Task<int> ExecuteSqlInterpolatedAsync(
         this DatabaseFacade databaseFacade,
-        FormattableString sql,
+        [LanguageInjection(InjectedLanguage.SQL)] FormattableString sql,
         CancellationToken cancellationToken = default)
         => ExecuteSqlRawAsync(databaseFacade, sql.Format, sql.GetArguments()!, cancellationToken);
 
@@ -326,9 +329,10 @@ public static class RelationalDatabaseFacadeExtensions
     ///     A task that represents the asynchronous operation. The task result is the number of rows affected.
     /// </returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    [StringFormatMethod("sql")]
     public static Task<int> ExecuteSqlRawAsync(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         CancellationToken cancellationToken = default)
         => ExecuteSqlRawAsync(databaseFacade, sql, Enumerable.Empty<object>(), cancellationToken);
 
@@ -367,9 +371,10 @@ public static class RelationalDatabaseFacadeExtensions
     /// <returns>
     ///     A task that represents the asynchronous operation. The task result is the number of rows affected.
     /// </returns>
+    [StringFormatMethod("sql")]
     public static Task<int> ExecuteSqlRawAsync(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         params object[] parameters)
         => ExecuteSqlRawAsync(databaseFacade, sql, (IEnumerable<object>)parameters);
 
@@ -410,9 +415,10 @@ public static class RelationalDatabaseFacadeExtensions
     ///     A task that represents the asynchronous operation. The task result is the number of rows affected.
     /// </returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    [StringFormatMethod("sql")]
     public static async Task<int> ExecuteSqlRawAsync(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [LanguageInjection(InjectedLanguage.SQL)] string sql,
         IEnumerable<object> parameters,
         CancellationToken cancellationToken = default)
     {
