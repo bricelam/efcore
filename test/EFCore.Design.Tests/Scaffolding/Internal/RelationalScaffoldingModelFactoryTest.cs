@@ -940,6 +940,98 @@ public class RelationalScaffoldingModelFactoryTest
     }
 
     [ConditionalFact]
+    public void Foreign_key_with_different_type()
+    {
+        var database = new DatabaseModel
+        {
+            Tables =
+            {
+                new DatabaseTable
+                {
+                    Name = "Blogs",
+                    Columns =
+                    {
+                        new DatabaseColumn
+                        {
+                            Name = "Id",
+                            StoreType = "int"
+                        }
+                    },
+                    PrimaryKey = new DatabasePrimaryKey
+                    {
+                        Columns =
+                        {
+                            new DatabaseColumnRef("Id")
+                        }
+                    }
+                },
+                new DatabaseTable
+                {
+                    Name = "Posts",
+                    Columns =
+                    {
+                        new DatabaseColumn
+                        {
+                            Name = "Id",
+                            StoreType = "int"
+                        },
+                        new DatabaseColumn
+                        {
+                            Name = "BlogId",
+                            StoreType = "bigint"
+                        }
+                    },
+                    PrimaryKey = new DatabasePrimaryKey
+                    {
+                        Columns =
+                        {
+                            new DatabaseColumnRef("Id")
+                        }
+                    },
+                    ForeignKeys =
+                    {
+                        new DatabaseForeignKey
+                        {
+                            Columns =
+                            {
+                                new DatabaseColumnRef("BlogId")
+                            },
+                            PrincipalTable = new DatabaseTableRef("Blogs"),
+                            PrincipalColumns =
+                            {
+                                new DatabaseColumnRef("Id")
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        var model = _factory.Create(database, new ModelReverseEngineerOptions());
+
+        var (level, message) = Assert.Single(_reporter.Messages);
+        Assert.Equal(LogLevel.Warning, level);
+        Assert.Equal("TODO", message);
+
+        Assert.Collection(
+            model.GetEntityTypes(),
+            e =>
+            {
+                Assert.Equal("Blog", e.Name);
+                var property = Assert.Single(e.GetProperties());
+                Assert.Equal("int", property.GetColumnType());
+            },
+            e =>
+            {
+                Assert.Equal("Post", e.Name);
+                var foreignKey = Assert.Single(e.GetForeignKeys());
+                Assert.Equal("Blog", foreignKey.PrincipalEntityType.Name);
+                var property = Assert.Single(foreignKey.Properties);
+                Assert.Equal("int", property.GetColumnType());
+            });
+    }
+
+    [ConditionalFact]
     public void Unique_foreign_key()
     {
         var parentTable = new DatabaseTable
