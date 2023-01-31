@@ -1,0 +1,6 @@
+Microsoft.EntityFrameworkCore.VisualStudio
+
+Entry points:
+	New Item
+	Connected Services
+	Scaffolded Item
