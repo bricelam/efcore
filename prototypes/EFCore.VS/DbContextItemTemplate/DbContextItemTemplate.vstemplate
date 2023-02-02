@@ -6,17 +6,11 @@
     <Icon>DbContextItemTemplate.ico</Icon>
     <TemplateID>b69e3145-a29b-42b8-b8d5-797b5e12c73d</TemplateID>
     <ProjectType>CSharp</ProjectType>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
-    <DefaultName>Class.cs</DefaultName>
+    <DefaultName>DbContext.cs</DefaultName>
   </TemplateData>
   <TemplateContent>
-    <!--<References>
-      <Reference>
-        <Assembly>System</Assembly>
-      </Reference>
-    </References>-->
-    <ProjectItem ReplaceParameters="true">Class.cs</ProjectItem>
+    <ProjectItem ReplaceParameters="true">DbContext.cs</ProjectItem>
   </TemplateContent>
   <WizardExtension>
     <!-- TODO: Flow version -->
@@ -28,8 +22,7 @@
     <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
   </WizardExtension>
   <WizardData>
-    <!-- TODO: Include in VSIX (https://learn.microsoft.com/nuget/visual-studio-extensibility/visual-studio-templates#vsix-package-repository), flow version -->
-    <packages>
+    <packages repository="extension" repositoryId="MicrosoftEntityFrameworkCoreVisualStudio.d21c17c1-7b73-43ef-acad-8d98c46a888f">
       <package id="Microsoft.EntityFrameworkCore.SqlServer" version="6.0.13" />
     </packages>
   </WizardData>

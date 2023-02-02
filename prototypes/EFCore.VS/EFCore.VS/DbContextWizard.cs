@@ -7,6 +7,8 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 internal class DbContextWizard : IWizard
 {
+    private NewDbContextForm _form;
+
     // Called as the template file begins to be processed.
     public void RunStarted(
         object automationObject,
@@ -19,11 +21,21 @@ internal class DbContextWizard : IWizard
 
         var dte = (DTE)automationObject;
 
+        // targetframeworkversion
+        // targetframeworkidentifier
+        // rootname
+        // safeitemname
+        // rootnamespace
+        // defaultnamespace
+
+        _form = new NewDbContextForm();
+        _form.ShowDialog();
+
         // TODO
     }
 
     public bool ShouldAddProjectItem(string filePath)
-        => false;
+        => true;
 
     // Called when a project item has finished being generated.
     public void ProjectItemFinishedGenerating(ProjectItem projectItem)
