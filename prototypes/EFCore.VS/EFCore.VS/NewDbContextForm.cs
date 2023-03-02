@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 
@@ -7,57 +6,48 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 public partial class NewDbContextForm : Form
 {
+    private static readonly Guid _adoDotNetTechnology = new("77AB9A9D-78B9-4ba7-91AC-873F5338F1D2");
+    private IVsDataProvider _selectedProvider;
+
     public NewDbContextForm()
-        => InitializeComponent();
-
-    private void button1_Click(object sender, EventArgs e)
     {
-        ThreadHelper.ThrowIfNotOnUIThread();
+        // TODO: Set _providerComboBox.Items
+        InitializeComponent();
+    }
 
+    private void _chooseButton_Click(object sender, EventArgs e)
+    {
         var dialogFactory = (IVsDataConnectionDialogFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionDialogFactory));
-        var providerManager = (IVsDataProviderManager)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataProviderManager));
-
         var dialog = dialogFactory.CreateConnectionDialog();
-        dialog.AddSources(
-            (_, providerKey) =>
-            {
-                var provider = providerManager.Providers[providerKey];
-                if (provider.Technology != new Guid("77AB9A9D-78B9-4BA7-91AC-873F5338F1D2"))
-                {
-                    return false;
-                }
+        dialog.AddSources(_adoDotNetTechnology);
+        if (!dialog.ShowDialog())
+        {
+            return;
+        }
 
-                var invariantName = provider.GetProperty("InvariantName") as string;
-                if (invariantName is null)
-                {
-                    return false;
-                }
+        var providerManager = (IVsDataProviderManager)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataProviderManager));
+        _selectedProvider = providerManager.Providers[dialog.SelectedProvider];
+        _connectionTextBox.Text = dialog.SafeConnectionString;
 
-                DbProviderFactory providerFactory = null;
-                try
-                {
-                    providerFactory = DbProviderFactories.GetFactory(invariantName);
-                }
-                catch
-                {
-                }
-                if (providerFactory is null)
-                {
-                    // TODO: Can we do something with just the invariant name?
-                    return false;
-                }
+        var connectionType = _selectedProvider.GetConnectionType();
+        if (connectionType is not null
+            && ProviderRegistry.TryGetForConnectionType(connectionType, out var providerName))
+        {
+            _providerComboBox.Text = providerName;
+        }
+    }
 
-                string connectionType;
-                using (var connection = providerFactory.CreateConnection())
-                {
-                    connectionType = connection.GetType().FullName;
-                }
+    private void _providerComboBox_TextChanged(object sender, EventArgs e)
+    {
+        if (_selectedProvider is null)
+            return;
 
-                // TODO: Match to an EF provider
-                return true;
-            });
-        dialog.ShowDialog();
-
-        label1.Text = dialog.SafeConnectionString;
+        var connectionType = _selectedProvider.GetConnectionType();
+        if (connectionType is not null
+            && ProviderRegistry.TryGetForConnectionType(connectionType, out var providerName)
+            && _providerComboBox.Text != providerName)
+        {
+            // TODO: Show error/warning
+        }
     }
 }
