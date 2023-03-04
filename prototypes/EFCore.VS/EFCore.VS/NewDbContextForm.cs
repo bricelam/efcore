@@ -1,53 +1,47 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
+using Microsoft.VisualStudio.Data.Services.RelationalObjectModel;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 public partial class NewDbContextForm : Form
 {
-    private static readonly Guid _adoDotNetTechnology = new("77AB9A9D-78B9-4ba7-91AC-873F5338F1D2");
-    private IVsDataProvider _selectedProvider;
-
     public NewDbContextForm()
     {
-        // TODO: Set _providerComboBox.Items
         InitializeComponent();
+        _providerComboBox.Items.AddRange(ProviderRegistry.GetEntityFrameworkCoreProviders());
     }
 
     private void _chooseButton_Click(object sender, EventArgs e)
     {
         var dialogFactory = (IVsDataConnectionDialogFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionDialogFactory));
+        var providerManager = (IVsDataProviderManager)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataProviderManager));
+
         var dialog = dialogFactory.CreateConnectionDialog();
-        dialog.AddSources(_adoDotNetTechnology);
+        // TODO: Review
+        dialog.ChooseSourceHeaderLabel = "Choose wisely. If your database isn't listed, Cancel and manually enter you connection string.";
+        dialog.SaveSelection = false;
+        dialog.ChangeSourceHeaderLabel = dialog.ChooseSourceHeaderLabel;
+        dialog.AddSources((source, provider) => ProviderRegistry.TryGetEntityFrameworkCoreProvider(providerManager.Providers[provider], out _));
         if (!dialog.ShowDialog())
         {
             return;
         }
 
-        var providerManager = (IVsDataProviderManager)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataProviderManager));
-        _selectedProvider = providerManager.Providers[dialog.SelectedProvider];
+        var selectedProvider = providerManager.Providers[dialog.SelectedProvider];
         _connectionTextBox.Text = dialog.SafeConnectionString;
 
-        var connectionType = _selectedProvider.GetConnectionType();
-        if (connectionType is not null
-            && ProviderRegistry.TryGetForConnectionType(connectionType, out var providerName))
+        if (ProviderRegistry.TryGetEntityFrameworkCoreProvider(selectedProvider, out var providerName))
         {
             _providerComboBox.Text = providerName;
         }
-    }
 
-    private void _providerComboBox_TextChanged(object sender, EventArgs e)
-    {
-        if (_selectedProvider is null)
-            return;
-
-        var connectionType = _selectedProvider.GetConnectionType();
-        if (connectionType is not null
-            && ProviderRegistry.TryGetForConnectionType(connectionType, out var providerName)
-            && _providerComboBox.Text != providerName)
-        {
-            // TODO: Show error/warning
-        }
+        // TODO: Move to new page
+        var connectionFactory = (IVsDataConnectionFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionFactory));
+        var connection = connectionFactory.CreateConnection(selectedProvider.Guid, _connectionTextBox.Text, encryptedString: false);
+        var selector = (IVsDataMappedObjectSelector)connection.GetService(typeof(IVsDataMappedObjectSelector));
+        var tables = selector.SelectMappedObjects<IVsDataTable>();
+        var views = selector.SelectMappedObjects<IVsDataView>();
     }
 }

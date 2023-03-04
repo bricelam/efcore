@@ -73,16 +73,10 @@
             // _providerComboBox
             // 
             this._providerComboBox.FormattingEnabled = true;
-            this._providerComboBox.Items.AddRange(new object[] {
-            "Microsoft.EntityFrameworkCore.SqlServer",
-            "Microsoft.EntityFrameworkCore.Sqlite",
-            "Npgsql.EntityFrameworkCore.PostgreSQL",
-            "Oracle.EntityFrameworkCore"});
             this._providerComboBox.Location = new System.Drawing.Point(107, 38);
             this._providerComboBox.Name = "_providerComboBox";
             this._providerComboBox.Size = new System.Drawing.Size(280, 21);
             this._providerComboBox.TabIndex = 4;
-            this._providerComboBox.TextChanged += new System.EventHandler(this._providerComboBox_TextChanged);
             // 
             // NewDbContextForm
             // 

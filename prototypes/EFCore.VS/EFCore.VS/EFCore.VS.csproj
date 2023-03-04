@@ -46,7 +46,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DbContextWizard.cs" />
-    <Compile Include="Extensions\IVsDataProviderExtensions.cs" />
     <Compile Include="NewDbContextForm.cs">
       <SubType>Form</SubType>
     </Compile>
