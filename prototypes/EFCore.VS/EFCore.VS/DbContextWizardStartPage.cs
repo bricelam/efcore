@@ -1,16 +1,20 @@
-﻿using System.Windows.Forms;
+﻿using Microsoft.EntityFrameworkCore.VisualStudio.Properties;
 using Microsoft.VisualStudio.Data.Core;
-using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Data.Services.RelationalObjectModel;
+using Microsoft.VisualStudio.Data.Services;
+using Microsoft.WizardFramework;
+using System.Linq;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
-public partial class NewDbContextForm : Form
+public partial class DbContextWizardStartPage : WizardPage
 {
-    public NewDbContextForm()
+    public DbContextWizardStartPage(WizardForm wizard)
+        : base(wizard)
     {
         InitializeComponent();
         _providerComboBox.Items.AddRange(ProviderRegistry.GetEntityFrameworkCoreProviders());
+        Logo = Resources.WizardPageLogo;
     }
 
     private void _chooseButton_Click(object sender, EventArgs e)
@@ -38,10 +42,11 @@ public partial class NewDbContextForm : Form
         }
 
         // TODO: Move to new page
+        // TODO: Fail gracefully
         var connectionFactory = (IVsDataConnectionFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionFactory));
         var connection = connectionFactory.CreateConnection(selectedProvider.Guid, _connectionTextBox.Text, encryptedString: false);
         var selector = (IVsDataMappedObjectSelector)connection.GetService(typeof(IVsDataMappedObjectSelector));
-        var tables = selector.SelectMappedObjects<IVsDataTable>();
-        var views = selector.SelectMappedObjects<IVsDataView>();
+        var tables = selector.SelectMappedObjects<IVsDataTable>().Select(t => $"{t.Schema}.{t.Name}").ToList();
+        //var views = selector.SelectMappedObjects<IVsDataView>();
     }
 }

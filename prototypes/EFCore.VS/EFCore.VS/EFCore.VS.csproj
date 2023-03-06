@@ -46,14 +46,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DbContextWizard.cs" />
-    <Compile Include="NewDbContextForm.cs">
+    <Compile Include="DbContextWizardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewDbContextForm.Designer.cs">
-      <DependentUpon>NewDbContextForm.cs</DependentUpon>
+    <Compile Include="DbContextWizardForm.Designer.cs">
+      <DependentUpon>DbContextWizardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MicrosoftEntityFrameworkCoreVisualStudioPackage.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ProviderRegistry.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
@@ -67,6 +72,12 @@
       <Generator>VsctGenerator</Generator>
       <LastGenOutput>VSCommandTable.cs</LastGenOutput>
     </VSCTCompile>
+    <Compile Include="DbContextWizardStartPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbContextWizardStartPage.Designer.cs">
+      <DependentUpon>DbContextWizardStartPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -74,6 +85,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\WizardPageLogo.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates.pkgdef">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -106,13 +120,14 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework">
-      <Version>17.4.33103.184</Version>
+      <Version>17.5.33428.388</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.5.4065">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" Version="17.4.33103.184" />
+    <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" Version="17.5.33428.366" />
+    <PackageReference Include="Microsoft.WizardFramework" Version="17.5.33428.366" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbContextItemTemplate\DbContextItemTemplate.csproj">
@@ -124,8 +139,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="NewDbContextForm.resx">
-      <DependentUpon>NewDbContextForm.cs</DependentUpon>
+    <EmbeddedResource Include="DbContextWizardForm.resx">
+      <DependentUpon>DbContextWizardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbContextWizardStartPage.resx">
+      <DependentUpon>DbContextWizardStartPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

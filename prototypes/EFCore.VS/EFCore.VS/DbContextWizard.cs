@@ -7,7 +7,7 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 internal class DbContextWizard : IWizard
 {
-    private NewDbContextForm _form;
+    private DbContextWizardForm _form;
 
     // Called as the template file begins to be processed.
     public void RunStarted(
@@ -28,8 +28,13 @@ internal class DbContextWizard : IWizard
         // rootnamespace
         // defaultnamespace
 
-        _form = new NewDbContextForm();
-        _form.ShowDialog();
+        _form = new DbContextWizardForm();
+        _form.Start();
+
+        if (_form.Cancelled)
+        {
+            throw new WizardCancelledException();
+        }
 
         // TODO
     }
