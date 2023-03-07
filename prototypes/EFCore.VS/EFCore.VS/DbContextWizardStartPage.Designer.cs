@@ -38,28 +38,32 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this.SuspendLayout();
             // 
             // infoPanel
-            //             
-            this.infoPanel.Size = new System.Drawing.Size(500, 304);            
+            // 
+            this.infoPanel.Location = new System.Drawing.Point(0, 304);
+            this.infoPanel.Size = new System.Drawing.Size(500, 0);
             // 
             // _providerComboBox
             // 
             this._providerComboBox.FormattingEnabled = true;
-            this._providerComboBox.Location = new System.Drawing.Point(98, 32);
+            this._providerComboBox.Location = new System.Drawing.Point(6, 60);
             this._providerComboBox.Name = "_providerComboBox";
-            this._providerComboBox.Size = new System.Drawing.Size(163, 21);
+            this._providerComboBox.Size = new System.Drawing.Size(220, 21);
             this._providerComboBox.TabIndex = 9;
+            this._providerComboBox.Text = "Microsoft.EntityFrameworkCore.SqlServer";
             // 
             // _connectionTextBox
             // 
-            this._connectionTextBox.Location = new System.Drawing.Point(98, 6);
+            this._connectionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._connectionTextBox.Location = new System.Drawing.Point(6, 16);
             this._connectionTextBox.Name = "_connectionTextBox";
-            this._connectionTextBox.Size = new System.Drawing.Size(163, 20);
+            this._connectionTextBox.Size = new System.Drawing.Size(410, 20);
             this._connectionTextBox.TabIndex = 8;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(46, 35);
+            this.label2.Location = new System.Drawing.Point(3, 44);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 7;
@@ -68,7 +72,7 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 9);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 6;
@@ -76,7 +80,8 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             // 
             // _chooseButton
             // 
-            this._chooseButton.Location = new System.Drawing.Point(267, 4);
+            this._chooseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._chooseButton.Location = new System.Drawing.Point(422, 13);
             this._chooseButton.Name = "_chooseButton";
             this._chooseButton.Size = new System.Drawing.Size(75, 23);
             this._chooseButton.TabIndex = 5;
@@ -87,11 +92,11 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             // DbContextWizardStartPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.Controls.Add(this._chooseButton);
             this.Controls.Add(this._providerComboBox);
             this.Controls.Add(this._connectionTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this._chooseButton);
             this.Headline = "Choose Your Data Connection";
             this.Name = "DbContextWizardStartPage";
             this.Size = new System.Drawing.Size(500, 304);
@@ -101,8 +106,6 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this.Controls.SetChildIndex(this._connectionTextBox, 0);
             this.Controls.SetChildIndex(this._providerComboBox, 0);
             this.Controls.SetChildIndex(this._chooseButton, 0);
-            this.infoPanel.ResumeLayout(false);
-            this.infoPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -9,11 +9,11 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
     internal sealed partial class Vsix
     {
         public const string Id = "MicrosoftEntityFrameworkCoreVisualStudio.d21c17c1-7b73-43ef-acad-8d98c46a888f";
-        public const string Name = "MicrosoftEntityFrameworkCoreVisualStudio";
-        public const string Description = @"Empty VSIX Project.";
+        public const string Name = "Entity Framework Core tools";
+        public const string Description = @"Tools for EF Core, a modern object-database mapper for .NET.";
         public const string Language = "en-US";
         public const string Version = "1.0";
-        public const string Author = "Razer";
+        public const string Author = "Microsoft";
         public const string Tags = "";
     }
 }

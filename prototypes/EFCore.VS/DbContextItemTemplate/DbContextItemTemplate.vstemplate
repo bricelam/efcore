@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>ADO.NET Entity Data Model</Name>
-    <Description>A project item for creating an ADO.NET Entity Data Model.</Description>
+    <Name>Entity Framework Core Model</Name>
+    <Description>DbContext and entity types for accessing a database using EF Core</Description>
     <Icon>EntityDatabase.png</Icon>
     <TemplateID>b69e3145-a29b-42b8-b8d5-797b5e12c73d</TemplateID>
     <ProjectType>CSharp</ProjectType>
@@ -18,6 +18,7 @@
     <FullClassName>Microsoft.EntityFrameworkCore.VisualStudio.DbContextWizard</FullClassName>
   </WizardExtension>
   <WizardExtension>
+    <!-- TODO: Use composition to dynamically specify the package -->
     <Assembly>NuGet.VisualStudio.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
     <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
   </WizardExtension>

@@ -37,12 +37,12 @@
             this.ClientSize = new System.Drawing.Size(520, 446);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.MinimumSize = new System.Drawing.Size(536, 485);
-            this.Name = "Form2";
+            this.Name = "DbContextWizardForm";
             this.ShowIcon = false;
             this.ShowOrientationPanel = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Entity Data Model Wizard";
-            this.Title = "Entity Data Model Wizard";
+            this.Text = "Add New EF Core Model";
+            this.Title = "Add New EF Core Model";
             this.ResumeLayout(false);
 
         }

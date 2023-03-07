@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="MicrosoftEntityFrameworkCoreVisualStudio.d21c17c1-7b73-43ef-acad-8d98c46a888f" Version="1.0" Language="en-US" Publisher="Razer" />
-        <DisplayName>MicrosoftEntityFrameworkCoreVisualStudio</DisplayName>
-        <Description xml:space="preserve">Empty VSIX Project.</Description>
+        <Identity Id="MicrosoftEntityFrameworkCoreVisualStudio.d21c17c1-7b73-43ef-acad-8d98c46a888f" Version="1.0" Language="en-US" Publisher="Microsoft" />
+        <DisplayName>Entity Framework Core tools</DisplayName>
+        <Description xml:space="preserve">Tools for EF Core, a modern object-database mapper for .NET.</Description>
         <Icon>Resources\Icon.png</Icon>
         <PreviewImage>Resources\Icon.png</PreviewImage>
     </Metadata>
