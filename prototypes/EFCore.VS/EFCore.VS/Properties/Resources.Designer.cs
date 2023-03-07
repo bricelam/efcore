@@ -63,9 +63,19 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap WizardPageLogo {
+        internal static System.Drawing.Bitmap ConnectToDatabase {
             get {
-                object obj = ResourceManager.GetObject("WizardPageLogo", resourceCulture);
+                object obj = ResourceManager.GetObject("ConnectToDatabase", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TableGroup {
+            get {
+                object obj = ResourceManager.GetObject("TableGroup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

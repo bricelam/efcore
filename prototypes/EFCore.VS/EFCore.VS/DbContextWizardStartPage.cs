@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.VisualStudio.Properties;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore.VisualStudio.Properties;
 using Microsoft.VisualStudio.Data.Core;
-using Microsoft.VisualStudio.Data.Services.RelationalObjectModel;
 using Microsoft.VisualStudio.Data.Services;
+using Microsoft.VisualStudio.Data.Services.RelationalObjectModel;
 using Microsoft.WizardFramework;
-using System.Linq;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
@@ -14,7 +14,7 @@ public partial class DbContextWizardStartPage : WizardPage
     {
         InitializeComponent();
         _providerComboBox.Items.AddRange(ProviderRegistry.GetEntityFrameworkCoreProviders());
-        Logo = Resources.WizardPageLogo;
+        Logo = Resources.ConnectToDatabase;
     }
 
     private void _chooseButton_Click(object sender, EventArgs e)

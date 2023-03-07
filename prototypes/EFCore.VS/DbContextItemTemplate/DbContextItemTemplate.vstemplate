@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>DbContextItemTemplate</Name>
-    <Description>DbContextItemTemplate</Description>
-    <Icon>DbContextItemTemplate.ico</Icon>
+    <Name>ADO.NET Entity Data Model</Name>
+    <Description>A project item for creating an ADO.NET Entity Data Model.</Description>
+    <Icon>EntityDatabase.png</Icon>
     <TemplateID>b69e3145-a29b-42b8-b8d5-797b5e12c73d</TemplateID>
     <ProjectType>CSharp</ProjectType>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>

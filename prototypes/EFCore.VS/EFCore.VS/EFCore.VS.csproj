@@ -85,7 +85,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\WizardPageLogo.png">
+    <Content Include="Resources\ConnectToDatabase.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\TableGroup.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Templates.pkgdef">

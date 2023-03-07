@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DbContext.cs" />
-    <None Include="DbContextItemTemplate.ico" />
+    <None Include="EntityDatabase.png" />
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="DbContextItemTemplate.vstemplate" />
