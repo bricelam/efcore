@@ -9,6 +9,10 @@ public partial class DbContextWizardForm : WizardForm
     public DbContextWizardForm()
     {
         InitializeComponent();
+        // 1. Existing database or empty model?
+        // 2. Connection and provider
+        // 3. Version
+        // 3. Tables and options
         AddPage(new DbContextWizardStartPage(this));
     }
 
