@@ -1,4 +1,5 @@
-﻿using Microsoft.WizardFramework;
+﻿using Microsoft.VisualStudio.Data.Core;
+using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
@@ -9,15 +10,19 @@ public partial class DbContextWizardForm : WizardForm
     public DbContextWizardForm()
     {
         InitializeComponent();
-        // 1. Existing database or empty model?
-        // 2. Connection and provider
-        // 3. Version
-        // 3. Tables and options
         AddPage(new DbContextWizardStartPage(this));
+        AddPage(new DbContextWizardConnectionPage(this));
+        // TODO: Version
+        AddPage(new DbContextWizardTablesPage(this));
+        // TODO: Options
     }
 
     public bool Cancelled
         => _cancelled;
+
+    public string ConnectionString { get; set; }
+    public IVsDataProvider VSProvider { get; set; }
+    public string EFProvider { get; set; }
 
     public override void OnCancel()
     {

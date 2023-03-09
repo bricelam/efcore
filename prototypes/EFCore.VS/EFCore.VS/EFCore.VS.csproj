@@ -52,6 +52,18 @@
     <Compile Include="DbContextWizardForm.Designer.cs">
       <DependentUpon>DbContextWizardForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DbContextWizardConnectionPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbContextWizardConnectionPage.Designer.cs">
+      <DependentUpon>DbContextWizardConnectionPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbContextWizardTablesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbContextWizardTablesPage.Designer.cs">
+      <DependentUpon>DbContextWizardTablesPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MicrosoftEntityFrameworkCoreVisualStudioPackage.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -144,6 +156,12 @@
   <ItemGroup>
     <EmbeddedResource Include="DbContextWizardForm.resx">
       <DependentUpon>DbContextWizardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbContextWizardConnectionPage.resx">
+      <DependentUpon>DbContextWizardConnectionPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbContextWizardTablesPage.resx">
+      <DependentUpon>DbContextWizardTablesPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
