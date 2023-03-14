@@ -12,9 +12,7 @@ public partial class DbContextWizardForm : WizardForm
         InitializeComponent();
         AddPage(new DbContextWizardStartPage(this));
         AddPage(new DbContextWizardConnectionPage(this));
-        // TODO: Version
         AddPage(new DbContextWizardTablesPage(this));
-        // TODO: Options
     }
 
     public bool Cancelled

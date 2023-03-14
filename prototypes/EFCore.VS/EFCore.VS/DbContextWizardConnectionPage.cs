@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.VisualStudio.Properties;
-using Microsoft.VisualStudio.Data.Core;
+﻿using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
+using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
@@ -14,7 +15,7 @@ public partial class DbContextWizardConnectionPage : WizardPage
     {
         _wizard = wizard;
         InitializeComponent();
-        Logo = Resources.ConnectToDatabase;
+        Logo = KnownMonikers.ConnectToDatabase.ToBitmap(64);
         _providerComboBox.Items.AddRange(ProviderRegistry.GetEntityFrameworkCoreProviders());
     }
 
@@ -45,6 +46,7 @@ public partial class DbContextWizardConnectionPage : WizardPage
             return;
         }
 
+        // TODO: Dynamically add Tables page here?
         Wizard.VSProvider = providerManager.Providers[dialog.SelectedProvider];
         _connectionTextBox.Text = dialog.SafeConnectionString;
 

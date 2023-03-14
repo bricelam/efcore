@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.VisualStudio.Properties;
+﻿using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
@@ -9,6 +10,6 @@ public partial class DbContextWizardStartPage : WizardPage
         : base(wizard)
     {
         InitializeComponent();
-        Logo = Resources.ConnectToDatabase;
+        Logo = KnownMonikers.EntityDatabase.ToBitmap(64);
     }
 }

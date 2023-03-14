@@ -10,11 +10,19 @@ internal static class ProviderRegistry
 
     private static readonly (string Name, string DbConnection)[] _providers = new[]
     {
-        // TODO: Add known providers
         ("Microsoft.EntityFrameworkCore.SqlServer", "Microsoft.Data.SqlClient.SqlConnection"),
-        ("Microsoft.EntityFrameworkCore.Sqlite", "Microsoft.Data.Sqlite.SqliteConnection"),
         ("Npgsql.EntityFrameworkCore.PostgreSQL", "Npgsql.NpgsqlConnection"),
+        ("Pomelo.EntityFrameworkCore.MySql", "MySqlConnector.MySqlConnection"),
+        ("Microsoft.EntityFrameworkCore.Sqlite", "Microsoft.Data.Sqlite.SqliteConnection"),
         ("Oracle.EntityFrameworkCore", "Oracle.ManagedDataAccess.Client.OracleConnection"),
+        ("Devart.Data.Oracle.EFCore", "Devart.Data.Oracle.OracleConnection"),
+        ("MySql.EntityFrameworkCore", "MySql.Data.MySqlClient.MySqlConnection"),
+        ("Devart.Data.MySql.EFCore", "Devart.Data.MySql.MySqlConnection"),
+        ("Devart.Data.PostgreSql.EFCore", "Devart.Data.PostgreSql.PgSqlConnection"),
+        ("FirebirdSql.EntityFrameworkCore.Firebird", "FirebirdSql.Data.FirebirdClient.FbConnection"),
+        ("IBM.EntityFrameworkCore", "IBM.Data.Db2.DB2Connection"),
+        ("Google.Cloud.EntityFrameworkCore.Spanner", "Google.Cloud.Spanner.Data.SpannerConnection"),
+        ("Devart.Data.SQLite.EFCore", "Devart.Data.SQLite.SQLiteConnection")
     };
 
     public static string[] GetEntityFrameworkCoreProviders()

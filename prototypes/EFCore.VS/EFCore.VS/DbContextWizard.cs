@@ -37,6 +37,7 @@ internal class DbContextWizard : IWizard
         }
 
         // TODO
+        //_form.EFProvider
     }
 
     public bool ShouldAddProjectItem(string filePath)

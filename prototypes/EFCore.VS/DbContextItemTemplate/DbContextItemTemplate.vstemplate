@@ -3,6 +3,7 @@
   <TemplateData>
     <Name>Entity Framework Core Model</Name>
     <Description>DbContext and entity types for accessing a database using EF Core</Description>
+    <!-- TODO: Can we reference an ImageMoniker here? -->
     <Icon>EntityDatabase.png</Icon>
     <TemplateID>b69e3145-a29b-42b8-b8d5-797b5e12c73d</TemplateID>
     <ProjectType>CSharp</ProjectType>
