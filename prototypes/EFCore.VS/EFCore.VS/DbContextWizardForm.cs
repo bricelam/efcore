@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.Data.Core;
-using Microsoft.WizardFramework;
+﻿using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
@@ -19,7 +18,7 @@ public partial class DbContextWizardForm : WizardForm
         => _cancelled;
 
     public string ConnectionString { get; set; }
-    public IVsDataProvider VSProvider { get; set; }
+    public Guid VSProvider { get; set; }
     public string EFProvider { get; set; }
 
     public override void OnCancel()

@@ -30,7 +30,7 @@
         {
             this.SuspendLayout();
             // 
-            // Form2
+            // DbContextWizardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoSize = true;

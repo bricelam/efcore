@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Data.Services.RelationalObjectModel;
+using Microsoft.VisualStudio.Data.Services.SupportEntities;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.WizardFramework;
@@ -38,12 +39,18 @@ public partial class DbContextWizardTablesPage : WizardPage
     {
         // TODO: Fail gracefully
         var connectionFactory = (IVsDataConnectionFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionFactory));
-        var connection = connectionFactory.CreateConnection(Wizard.VSProvider.Guid, Wizard.ConnectionString, encryptedString: false);
+        var connection = connectionFactory.CreateConnection(Wizard.VSProvider, Wizard.ConnectionString, encryptedString: false);
+
+        var info = (IVsDataSourceInformation)connection.GetService(typeof(IVsDataSourceInformation));
+        var defaultCatalog = info["DefaultCatalog"];
+
         var selector = (IVsDataMappedObjectSelector)connection.GetService(typeof(IVsDataMappedObjectSelector));
+        var restrictions = new object[] { defaultCatalog, /* schema: */ null, /* name: */ null };
 
         _tablesTreeView.Nodes.Clear();
 
-        var tables = selector.SelectMappedObjects<IVsDataTable>()
+        // TODO: Handle empty schema
+        var tables = selector.SelectMappedObjects<IVsDataTable>(restrictions)
             .Where(t => !t.IsSystemObject)
             .ToList();
         _tablesTreeView.Nodes.Add(
@@ -63,7 +70,7 @@ public partial class DbContextWizardTablesPage : WizardPage
                                 .ToArray()))
                     .ToArray()));
 
-        var views = selector.SelectMappedObjects<IVsDataView>()
+        var views = selector.SelectMappedObjects<IVsDataView>(restrictions)
             .Where(v => !v.IsSystemObject)
             .ToList();
         _tablesTreeView.Nodes.Add(

@@ -7,7 +7,6 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 internal class DbContextWizard : IWizard
 {
-    private DbContextWizardForm _form;
 
     // Called as the template file begins to be processed.
     public void RunStarted(
@@ -28,16 +27,15 @@ internal class DbContextWizard : IWizard
         // rootnamespace
         // defaultnamespace
 
-        _form = new DbContextWizardForm();
-        _form.Start();
-
-        if (_form.Cancelled)
+        using var form = new DbContextWizardForm();
+        form.Start();
+        if (form.Cancelled)
         {
             throw new WizardCancelledException();
         }
 
         // TODO
-        //_form.EFProvider
+        //form.EFProvider
     }
 
     public bool ShouldAddProjectItem(string filePath)

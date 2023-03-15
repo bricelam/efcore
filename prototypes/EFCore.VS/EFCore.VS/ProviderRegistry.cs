@@ -8,6 +8,8 @@ internal static class ProviderRegistry
 {
     private static readonly Guid _adoDotNetTechnology = new("77AB9A9D-78B9-4ba7-91AC-873F5338F1D2");
 
+    private static IVsDataProviderManager _providerManager;
+
     private static readonly (string Name, string DbConnection)[] _providers = new[]
     {
         ("Microsoft.EntityFrameworkCore.SqlServer", "Microsoft.Data.SqlClient.SqlConnection"),
@@ -28,8 +30,11 @@ internal static class ProviderRegistry
     public static string[] GetEntityFrameworkCoreProviders()
         => _providers.Select(p => p.Name).ToArray();
 
-    public static bool TryGetEntityFrameworkCoreProvider(IVsDataProvider provider, out string name)
+    public static bool TryGetEntityFrameworkCoreProvider(Guid providerGuid, out string name)
     {
+        _providerManager ??= (IVsDataProviderManager)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataProviderManager));
+
+        var provider = _providerManager.Providers[providerGuid];
         name = null;
 
         if (provider.Technology != _adoDotNetTechnology)
