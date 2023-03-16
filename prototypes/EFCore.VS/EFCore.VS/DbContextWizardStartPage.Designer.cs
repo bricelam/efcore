@@ -32,6 +32,7 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
         {
             this._fromDatabaseRadioButton = new System.Windows.Forms.RadioButton();
             this._emptyRadioButton = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // infoPanel
@@ -61,9 +62,21 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this._emptyRadioButton.Text = "Empty Code First model";
             this._emptyRadioButton.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Green;
+            this.label1.Location = new System.Drawing.Point(347, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(150, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "(TODO: Add way more details)";
+            // 
             // DbContextWizardStartPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this._emptyRadioButton);
             this.Controls.Add(this._fromDatabaseRadioButton);
             this.Headline = "Choose Model Contents";
@@ -72,6 +85,7 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this.Controls.SetChildIndex(this.infoPanel, 0);
             this.Controls.SetChildIndex(this._fromDatabaseRadioButton, 0);
             this.Controls.SetChildIndex(this._emptyRadioButton, 0);
+            this.Controls.SetChildIndex(this.label1, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -81,5 +95,6 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
 
         private RadioButton _fromDatabaseRadioButton;
         private RadioButton _emptyRadioButton;
+        private Label label1;
     }
 }

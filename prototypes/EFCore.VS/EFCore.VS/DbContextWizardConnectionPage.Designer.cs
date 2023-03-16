@@ -35,9 +35,12 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this._chooseButton = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this._pluralizeCheckBox = new System.Windows.Forms.CheckBox();
+            this._dataAnnotationsCheckBox = new System.Windows.Forms.CheckBox();
+            this._databaseNamesCheckBox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // infoPanel
@@ -93,44 +96,79 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this._chooseButton.UseVisualStyleBackColor = true;
             this._chooseButton.Click += new System.EventHandler(this._chooseButton_Click);
             // 
-            // checkBox1
+            // _pluralizeCheckBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(6, 99);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(246, 17);
-            this.checkBox1.TabIndex = 10;
-            this.checkBox1.Text = "Pluralize or singularize generated object names";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this._pluralizeCheckBox.AutoSize = true;
+            this._pluralizeCheckBox.Checked = true;
+            this._pluralizeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._pluralizeCheckBox.Location = new System.Drawing.Point(6, 99);
+            this._pluralizeCheckBox.Name = "_pluralizeCheckBox";
+            this._pluralizeCheckBox.Size = new System.Drawing.Size(246, 17);
+            this._pluralizeCheckBox.TabIndex = 10;
+            this._pluralizeCheckBox.Text = "Pluralize or singularize generated object names";
+            this._pluralizeCheckBox.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // _dataAnnotationsCheckBox
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(6, 122);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(107, 17);
-            this.checkBox2.TabIndex = 11;
-            this.checkBox2.Text = "Data annotations";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this._dataAnnotationsCheckBox.AutoSize = true;
+            this._dataAnnotationsCheckBox.Location = new System.Drawing.Point(6, 122);
+            this._dataAnnotationsCheckBox.Name = "_dataAnnotationsCheckBox";
+            this._dataAnnotationsCheckBox.Size = new System.Drawing.Size(107, 17);
+            this._dataAnnotationsCheckBox.TabIndex = 11;
+            this._dataAnnotationsCheckBox.Text = "Data annotations";
+            this._dataAnnotationsCheckBox.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // _databaseNamesCheckBox
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 145);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(126, 17);
-            this.checkBox3.TabIndex = 12;
-            this.checkBox3.Text = "Use database names";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this._databaseNamesCheckBox.AutoSize = true;
+            this._databaseNamesCheckBox.Location = new System.Drawing.Point(6, 145);
+            this._databaseNamesCheckBox.Name = "_databaseNamesCheckBox";
+            this._databaseNamesCheckBox.Size = new System.Drawing.Size(126, 17);
+            this._databaseNamesCheckBox.TabIndex = 12;
+            this._databaseNamesCheckBox.Text = "Use database names";
+            this._databaseNamesCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Green;
+            this.label3.Location = new System.Drawing.Point(194, 126);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(191, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "(TODO: Add info icons for descriptions)";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Green;
+            this.label4.Location = new System.Drawing.Point(255, 73);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(201, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "(TODO: Reccommend DDEX providers?)";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Green;
+            this.label5.Location = new System.Drawing.Point(255, 44);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(208, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "(TODO: Allow selecting package version?)";
             // 
             // DbContextWizardConnectionPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this._databaseNamesCheckBox);
+            this.Controls.Add(this._dataAnnotationsCheckBox);
+            this.Controls.Add(this._pluralizeCheckBox);
             this.Controls.Add(this._chooseButton);
             this.Controls.Add(this._providerComboBox);
             this.Controls.Add(this._connectionTextBox);
@@ -144,10 +182,13 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this.Controls.SetChildIndex(this._connectionTextBox, 0);
             this.Controls.SetChildIndex(this._providerComboBox, 0);
             this.Controls.SetChildIndex(this._chooseButton, 0);
-            this.Controls.SetChildIndex(this.checkBox1, 0);
+            this.Controls.SetChildIndex(this._pluralizeCheckBox, 0);
             this.Controls.SetChildIndex(this.infoPanel, 0);
-            this.Controls.SetChildIndex(this.checkBox2, 0);
-            this.Controls.SetChildIndex(this.checkBox3, 0);
+            this.Controls.SetChildIndex(this._dataAnnotationsCheckBox, 0);
+            this.Controls.SetChildIndex(this._databaseNamesCheckBox, 0);
+            this.Controls.SetChildIndex(this.label3, 0);
+            this.Controls.SetChildIndex(this.label4, 0);
+            this.Controls.SetChildIndex(this.label5, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -160,8 +201,11 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox _providerComboBox;
         private System.Windows.Forms.TextBox _connectionTextBox;
-        private CheckBox checkBox1;
-        private CheckBox checkBox2;
-        private CheckBox checkBox3;
+        private CheckBox _pluralizeCheckBox;
+        private CheckBox _dataAnnotationsCheckBox;
+        private CheckBox _databaseNamesCheckBox;
+        private Label label3;
+        private Label label4;
+        private Label label5;
     }
 }

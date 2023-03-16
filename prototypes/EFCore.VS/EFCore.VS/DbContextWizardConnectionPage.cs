@@ -7,24 +7,25 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 public partial class DbContextWizardConnectionPage : WizardPage
 {
-    private readonly DbContextWizardForm _wizard;
-
     public DbContextWizardConnectionPage(DbContextWizardForm wizard)
         : base(wizard)
     {
-        _wizard = wizard;
+        Wizard = wizard;
         InitializeComponent();
         Logo = KnownMonikers.ConnectToDatabase.ToBitmap(64);
         _providerComboBox.Items.AddRange(ProviderRegistry.GetEntityFrameworkCoreProviders());
     }
 
-    protected new DbContextWizardForm Wizard
-        => _wizard;
+    protected new DbContextWizardForm Wizard { get; }
 
     public override bool OnDeactivate()
     {
+        // TODO: Surface --no-onconfiguring?
         Wizard.ConnectionString = _connectionTextBox.Text;
-        Wizard.EFProvider = _providerComboBox.Text;
+        Wizard.Provider = _providerComboBox.Text;
+        Wizard.Pluralize = _pluralizeCheckBox.Checked;
+        Wizard.DataAnnotations = _dataAnnotationsCheckBox.Checked;
+        Wizard.DatabaseNames = _databaseNamesCheckBox.Checked;
 
         return base.OnDeactivate();
     }
@@ -45,8 +46,8 @@ public partial class DbContextWizardConnectionPage : WizardPage
             return;
         }
 
-        // TODO: Dynamically add Tables page here?
-        Wizard.VSProvider = dialog.SelectedProvider;
+        // TODO: Skip select tables page when no provider
+        Wizard.VsDataProvider = dialog.SelectedProvider;
         _connectionTextBox.Text = dialog.SafeConnectionString;
 
         if (ProviderRegistry.TryGetEntityFrameworkCoreProvider(dialog.SelectedProvider, out var providerName))

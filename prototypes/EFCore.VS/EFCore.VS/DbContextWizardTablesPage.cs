@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Data.Services.RelationalObjectModel;
@@ -11,14 +12,13 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
 public partial class DbContextWizardTablesPage : WizardPage
 {
-    private readonly DbContextWizardForm _wizard;
-
     public DbContextWizardTablesPage(DbContextWizardForm wizard)
         : base(wizard)
     {
-        _wizard = wizard;
+        Wizard = wizard;
         InitializeComponent();
         Logo = KnownMonikers.TableGroup.ToBitmap(64);
+        // TODO: Handle parent-child checking behaviors
         _tablesTreeView.ImageList = new ImageList
         {
             Images =
@@ -32,14 +32,13 @@ public partial class DbContextWizardTablesPage : WizardPage
         };
     }
 
-    protected new DbContextWizardForm Wizard
-        => _wizard;
+    protected new DbContextWizardForm Wizard { get; }
 
-    public override bool OnActivate()
+    public override void OnActivated()
     {
         // TODO: Fail gracefully
         var connectionFactory = (IVsDataConnectionFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionFactory));
-        var connection = connectionFactory.CreateConnection(Wizard.VSProvider, Wizard.ConnectionString, encryptedString: false);
+        var connection = connectionFactory.CreateConnection(Wizard.VsDataProvider, Wizard.ConnectionString, encryptedString: false);
 
         var info = (IVsDataSourceInformation)connection.GetService(typeof(IVsDataSourceInformation));
         var defaultCatalog = info["DefaultCatalog"];
@@ -49,7 +48,7 @@ public partial class DbContextWizardTablesPage : WizardPage
 
         _tablesTreeView.Nodes.Clear();
 
-        // TODO: Handle empty schema
+        // TODO: Handle empty schema better
         var tables = selector.SelectMappedObjects<IVsDataTable>(restrictions)
             .Where(t => !t.IsSystemObject)
             .ToList();
@@ -62,13 +61,15 @@ public partial class DbContextWizardTablesPage : WizardPage
                     .Distinct()
                     .Select(
                         s => new TreeNode(
-                            s,
+                            s ?? "(default schema)",
                             2, 2,
                             tables
                                 .Where(t => t.Schema == s)
-                                .Select(t => new TreeNode(t.Name, 3, 3))
-                                .ToArray()))
-                    .ToArray()));
+                                .Select(t => new TreeNode(t.Name, 3, 3) { Tag = t, Checked = true })
+                                .ToArray())
+                        { Checked = true })
+                    .ToArray())
+            { Checked = true });
 
         var views = selector.SelectMappedObjects<IVsDataView>(restrictions)
             .Where(v => !v.IsSystemObject)
@@ -82,14 +83,43 @@ public partial class DbContextWizardTablesPage : WizardPage
                     .Distinct()
                     .Select(
                         s => new TreeNode(
-                            s,
+                            s ?? "(default schema)",
                             2, 2,
                             views
                                 .Where(v => v.Schema == s)
-                                .Select(v => new TreeNode(v.Name, 4, 4))
-                                .ToArray()))
-                    .ToArray()));
+                                .Select(v => new TreeNode(v.Name, 4, 4) { Tag = v, Checked = true })
+                                .ToArray())
+                        { Checked = true })
+                    .ToArray())
+            { Checked = true });
 
-        return base.OnActivate();
+        base.OnActivated();
+    }
+
+    public override bool OnDeactivate()
+    {
+        // TODO: Empty when all checked; Add SelectedSchemas too
+        Wizard.SelectedTables.Clear();
+
+        var nodes = new Queue<TreeNode>(_tablesTreeView.Nodes.Cast<TreeNode>());
+        while (nodes.Count > 0)
+        {
+            var node = nodes.Dequeue();
+            foreach (TreeNode child in node.Nodes)
+            {
+                nodes.Enqueue(child);
+            }
+
+            if (node.Checked
+                && node.Tag is IVsDataTabularObject tableOrView)
+            {
+                Wizard.SelectedTables.Add(
+                    !string.IsNullOrEmpty(tableOrView.Schema)
+                        ? tableOrView.Schema + "." + tableOrView.Name
+                        : tableOrView.Name);
+            }
+        }
+
+        return base.OnDeactivate();
     }
 }

@@ -9,4 +9,5 @@ namespace $rootnamespace$;
 
 internal class $safeitemrootname$ : DbContext
 {
+    // $dotnetefcommand$
 }

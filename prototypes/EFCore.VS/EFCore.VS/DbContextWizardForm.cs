@@ -1,4 +1,6 @@
-﻿using Microsoft.WizardFramework;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.Data.Core;
+using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
@@ -17,9 +19,14 @@ public partial class DbContextWizardForm : WizardForm
     public bool Cancelled
         => _cancelled;
 
+    public bool EmptySelected { get; set; }
     public string ConnectionString { get; set; }
-    public Guid VSProvider { get; set; }
-    public string EFProvider { get; set; }
+    public Guid VsDataProvider { get; set; }
+    public string Provider { get; set; }
+    public bool Pluralize { get; set; }
+    public bool DataAnnotations { get; set; }
+    public bool DatabaseNames { get; set; }
+    public ICollection<string> SelectedTables { get; } = new List<string>();
 
     public override void OnCancel()
     {
