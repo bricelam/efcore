@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>Entity Framework Core Model</Name>
-    <Description>DbContext and entity types for accessing a database using EF Core</Description>
+    <Name>EF Core Model</Name>
+    <Description>DbContext and entity types for accessing a database using Entity Framework Core</Description>
     <!-- TODO: Can we reference an ImageMoniker here? -->
     <Icon>EntityDatabase.png</Icon>
     <TemplateID>b69e3145-a29b-42b8-b8d5-797b5e12c73d</TemplateID>
     <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>6.0</RequiredFrameworkVersion>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <DefaultName>DbContext.cs</DefaultName>
   </TemplateData>
@@ -18,14 +19,4 @@
     <Assembly>Microsoft.EntityFrameworkCore.VisualStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Assembly>
     <FullClassName>Microsoft.EntityFrameworkCore.VisualStudio.DbContextWizard</FullClassName>
   </WizardExtension>
-  <WizardExtension>
-    <!-- TODO: Use composition to dynamically specify the package -->
-    <Assembly>NuGet.VisualStudio.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
-    <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
-  </WizardExtension>
-  <WizardData>
-    <packages repository="extension" repositoryId="MicrosoftEntityFrameworkCoreVisualStudio.d21c17c1-7b73-43ef-acad-8d98c46a888f">
-      <package id="Microsoft.EntityFrameworkCore.SqlServer" version="6.0.13" />
-    </packages>
-  </WizardData>
 </VSTemplate>

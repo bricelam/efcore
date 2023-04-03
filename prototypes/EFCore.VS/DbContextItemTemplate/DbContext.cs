@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-$if$ ($targetframeworkversion$ >= 3.5)using System.Linq;
-$endif$using System.Text;
-$if$ ($targetframeworkversion$ >= 4.5)using System.Threading.Tasks;
-$endif$using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace $rootnamespace$;
 
 internal class $safeitemrootname$ : DbContext
 {
-    // $dotnetefcommand$
+    // TODO
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+        => options.UseSqlServer();
 }

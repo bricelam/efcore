@@ -40,6 +40,7 @@ public partial class DbContextWizardTablesPage : WizardPage
         var connectionFactory = (IVsDataConnectionFactory)ServiceProvider.GlobalProvider.GetService(typeof(IVsDataConnectionFactory));
         var connection = connectionFactory.CreateConnection(Wizard.VsDataProvider, Wizard.ConnectionString, encryptedString: false);
 
+        // TODO: Prompt to use this name instead for the DbContext?
         var info = (IVsDataSourceInformation)connection.GetService(typeof(IVsDataSourceInformation));
         var defaultCatalog = info["DefaultCatalog"];
 

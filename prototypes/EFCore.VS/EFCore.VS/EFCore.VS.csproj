@@ -65,6 +65,7 @@
       <DependentUpon>DbContextWizardTablesPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ImageMonikerExtensions.cs" />
+    <Compile Include="Extensions\IVsProjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MicrosoftEntityFrameworkCoreVisualStudioPackage.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -101,9 +102,6 @@
     <Content Include="Templates.pkgdef">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Packages\microsoft.entityframeworkcore.sqlserver.6.0.13.nupkg">
-      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
