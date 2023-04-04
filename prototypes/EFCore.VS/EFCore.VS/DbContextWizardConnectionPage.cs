@@ -21,6 +21,7 @@ public partial class DbContextWizardConnectionPage : WizardPage
     public override bool OnDeactivate()
     {
         // TODO: Surface --no-onconfiguring?
+        // TODO: Remember settings per user/project?
         Wizard.ConnectionString = _connectionTextBox.Text;
         Wizard.Provider = _providerComboBox.Text;
         Wizard.Pluralize = _pluralizeCheckBox.Checked;

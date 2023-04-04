@@ -23,7 +23,7 @@ internal class DbContextWizard : IWizard2
         IVsProject vsProject,
         uint parentItemId)
     {
-        //var dte = (DTE)automationObject;
+        var dte = (DTE)automationObject;
         var project = vsProject.ToProject();
         Debug.Assert(runKind == WizardRunKind.AsNewItem);
 
@@ -72,7 +72,11 @@ internal class DbContextWizard : IWizard2
             "--project",
             project.FullName,
             "--configuration",
-            project.ConfigurationManager.ActiveConfiguration.ConfigurationName
+            project.ConfigurationManager.ActiveConfiguration.ConfigurationName,
+            "--verbose",
+            "--no-color",
+            "--prefix-output",
+            "--json"
         };
 
         if (form.DataAnnotations)
@@ -113,22 +117,51 @@ internal class DbContextWizard : IWizard2
             {
                 FileName = "dotnet",
                 Arguments = ToArguments(args),
-                //CreateNoWindow = true,
+                CreateNoWindow = true,
                 UseShellExecute = false,
-                //RedirectStandardOutput = true,
+                RedirectStandardOutput = true,
                 WorkingDirectory = (string)project.Properties.Item("FullPath").Value
             })!;
-        //string? line;
-        //while ((line = process.StandardOutput.ReadLine()) != null)
-        //{
-        //    // TODO: Surface to user
-        //    Debug.WriteLine(line);
-        //}
 
-        //// TODO: Move to RunFinished?
-        //process.WaitForExit();
+        var output = new StringBuilder();
+        string? line;
+        while ((line = process.StandardOutput.ReadLine()) != null)
+        {
+            if (line.StartsWith("data: "))
+            {
+                output.AppendLine(line.Substring(6));
+                continue;
+            }
 
-        // TODO: Open context file
+            // TODO: Surface to user
+            // error and warn to error list
+            // info to status bar and output
+            // verbose to output
+            Debug.WriteLine(line);
+        }
+
+        // TODO: Move to RunFinished?
+        process.WaitForExit();
+
+        if (process.ExitCode != 0)
+        {
+            throw new Exception("Failure!");
+        }
+
+        var result = System.Text.Json.JsonSerializer.Deserialize<ScaffoldDatabaseResult>(
+            output.ToString(),
+            new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+        dte.ItemOperations.OpenFile(result.ContextFile);
+    }
+
+    class ScaffoldDatabaseResult
+    {
+        public string ContextFile { get; set; }
+        public ICollection<string> EntityTypeFiles { get; } = new List<string>();
     }
 
     void IWizard.RunStarted(
