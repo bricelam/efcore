@@ -34,7 +34,7 @@
             // 
             // infoPanel
             // 
-            this.infoPanel.Location = new System.Drawing.Point(0, 307);
+            this.infoPanel.Location = new System.Drawing.Point(0, 315);
             this.infoPanel.Size = new System.Drawing.Size(503, 0);
             // 
             // _tablesTreeView

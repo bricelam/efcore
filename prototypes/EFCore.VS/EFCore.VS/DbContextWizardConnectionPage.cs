@@ -5,6 +5,9 @@ using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
+// TODO: (UI) Allow selecting package version?
+// TODO: (UI) Recommend DDEX providers?
+// TODO: (UI) Add info icons for descriptions
 public partial class DbContextWizardConnectionPage : WizardPage
 {
     public DbContextWizardConnectionPage(DbContextWizardForm wizard)

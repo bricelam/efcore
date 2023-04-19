@@ -4,6 +4,7 @@ using Microsoft.WizardFramework;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
+// TODO: (UI) Add way more details
 public partial class DbContextWizardStartPage : WizardPage
 {
     public DbContextWizardStartPage(DbContextWizardForm wizard)

@@ -38,9 +38,6 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this._pluralizeCheckBox = new System.Windows.Forms.CheckBox();
             this._dataAnnotationsCheckBox = new System.Windows.Forms.CheckBox();
             this._databaseNamesCheckBox = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // infoPanel
@@ -128,44 +125,9 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this._databaseNamesCheckBox.Text = "Use database names";
             this._databaseNamesCheckBox.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Green;
-            this.label3.Location = new System.Drawing.Point(279, 126);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(191, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "(TODO: Add info icons for descriptions)";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Green;
-            this.label4.Location = new System.Drawing.Point(255, 73);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(201, 13);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "(TODO: Reccommend DDEX providers?)";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Green;
-            this.label5.Location = new System.Drawing.Point(255, 44);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(208, 13);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "(TODO: Allow selecting package version?)";
-            // 
             // DbContextWizardConnectionPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this._databaseNamesCheckBox);
             this.Controls.Add(this._dataAnnotationsCheckBox);
             this.Controls.Add(this._pluralizeCheckBox);
@@ -186,9 +148,6 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
             this.Controls.SetChildIndex(this.infoPanel, 0);
             this.Controls.SetChildIndex(this._dataAnnotationsCheckBox, 0);
             this.Controls.SetChildIndex(this._databaseNamesCheckBox, 0);
-            this.Controls.SetChildIndex(this.label3, 0);
-            this.Controls.SetChildIndex(this.label4, 0);
-            this.Controls.SetChildIndex(this.label5, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -204,8 +163,5 @@ namespace Microsoft.EntityFrameworkCore.VisualStudio
         private CheckBox _pluralizeCheckBox;
         private CheckBox _dataAnnotationsCheckBox;
         private CheckBox _databaseNamesCheckBox;
-        private Label label3;
-        private Label label4;
-        private Label label5;
     }
 }
