@@ -10,6 +10,7 @@ using NuGet.VisualStudio;
 
 namespace Microsoft.EntityFrameworkCore.VisualStudio;
 
+// TODO: Integrate with Scaffold new item too?
 internal class DbContextWizard : IWizard2
 {
     private bool _emptyModel;
@@ -58,6 +59,9 @@ internal class DbContextWizard : IWizard2
             "Microsoft.EntityFrameworkCore.Design",
             includePrerelease: false,
             ignoreDependencies: false);
+
+        var packageRestorer = componentModel.GetService<IVsPackageRestorer>();
+        packageRestorer.RestorePackages(project);
 
         // TODO: --startup-project, --framework, --runtime?
         var args = new List<string>
