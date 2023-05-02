@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -87,7 +88,7 @@ public static class RelationalQueryableExtensions
     [StringFormatMethod("sql")]
     public static IQueryable<TEntity> FromSqlRaw<TEntity>(
         this DbSet<TEntity> source,
-        [NotParameterized] string sql,
+        [NotParameterized, StringSyntax("SQL")] string sql,
         params object[] parameters)
         where TEntity : class
     {

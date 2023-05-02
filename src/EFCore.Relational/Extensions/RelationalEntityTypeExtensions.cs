@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 // ReSharper disable once CheckNamespace
@@ -904,7 +905,7 @@ public static class RelationalEntityTypeExtensions
     public static IMutableCheckConstraint AddCheckConstraint(
         this IMutableEntityType entityType,
         string name,
-        string sql)
+        [StringSyntax("SQL")] string sql)
     {
         Check.NotEmpty(name, nameof(name));
         Check.NotEmpty(sql, nameof(sql));
@@ -924,7 +925,7 @@ public static class RelationalEntityTypeExtensions
     public static IConventionCheckConstraint AddCheckConstraint(
         this IConventionEntityType entityType,
         string name,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         bool fromDataAnnotation = false)
     {
         Check.NotEmpty(name, nameof(name));

@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 /// <summary>
@@ -155,7 +157,7 @@ public class CreateTableBuilder<TColumns> : OperationBuilder<CreateTableOperatio
     /// <returns>The same builder so that multiple calls can be chained.</returns>
     public virtual OperationBuilder<AddCheckConstraintOperation> CheckConstraint(
         string name,
-        string sql)
+        [StringSyntax("SQL")] string sql)
     {
         Check.NotEmpty(name, nameof(name));
         Check.NotNull(sql, nameof(sql));

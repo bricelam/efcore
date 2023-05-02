@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
@@ -156,7 +157,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <returns>The number of rows affected.</returns>
     public static int ExecuteSqlRaw(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         params object[] parameters)
         => ExecuteSqlRaw(databaseFacade, sql, (IEnumerable<object>)parameters);
 
@@ -189,7 +190,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <returns>The number of rows affected.</returns>
     public static int ExecuteSqlInterpolated(
         this DatabaseFacade databaseFacade,
-        FormattableString sql)
+        [StringSyntax("SQL")] FormattableString sql)
         => ExecuteSqlRaw(databaseFacade, sql.Format, sql.GetArguments()!);
 
     /// <summary>
@@ -259,7 +260,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <returns>The number of rows affected.</returns>
     public static int ExecuteSqlRaw(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         IEnumerable<object> parameters)
     {
         Check.NotNull(sql, nameof(sql));
@@ -333,7 +334,7 @@ public static class RelationalDatabaseFacadeExtensions
     [StringFormatMethod("sql")]
     public static IQueryable<TResult> SqlQueryRaw<TResult>(
         this DatabaseFacade databaseFacade,
-        [NotParameterized] string sql,
+        [NotParameterized, StringSyntax("SQL")] string sql,
         params object[] parameters)
     {
         Check.NotNull(sql, nameof(sql));
@@ -490,7 +491,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     public static Task<int> ExecuteSqlRawAsync(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         CancellationToken cancellationToken = default)
         => ExecuteSqlRawAsync(databaseFacade, sql, Enumerable.Empty<object>(), cancellationToken);
 
@@ -531,7 +532,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// </returns>
     public static Task<int> ExecuteSqlRawAsync(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         params object[] parameters)
         => ExecuteSqlRawAsync(databaseFacade, sql, (IEnumerable<object>)parameters);
 
@@ -574,7 +575,7 @@ public static class RelationalDatabaseFacadeExtensions
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     public static async Task<int> ExecuteSqlRawAsync(
         this DatabaseFacade databaseFacade,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         IEnumerable<object> parameters,
         CancellationToken cancellationToken = default)
     {

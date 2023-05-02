@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Cosmos.Query.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -78,7 +79,7 @@ public static class CosmosQueryableExtensions
     [StringFormatMethod("sql")]
     public static IQueryable<TEntity> FromSqlRaw<TEntity>(
         this DbSet<TEntity> source,
-        [NotParameterized] string sql,
+        [NotParameterized, StringSyntax("SQL")] string sql,
         params object[] parameters)
         where TEntity : class
     {

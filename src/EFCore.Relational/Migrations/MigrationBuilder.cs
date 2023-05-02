@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 namespace Microsoft.EntityFrameworkCore.Migrations;
@@ -794,7 +795,7 @@ public class MigrationBuilder
     public virtual OperationBuilder<AddCheckConstraintOperation> AddCheckConstraint(
         string name,
         string table,
-        string sql,
+        [StringSyntax("SQL")] string sql,
         string? schema = null)
     {
         Check.NotEmpty(name, nameof(name));
@@ -1266,7 +1267,7 @@ public class MigrationBuilder
     /// </param>
     /// <returns>A builder to allow annotations to be added to the operation.</returns>
     public virtual OperationBuilder<SqlOperation> Sql(
-        string sql,
+        [StringSyntax("SQL")] string sql,
         bool suppressTransaction = false)
     {
         Check.NotEmpty(sql, nameof(sql));
