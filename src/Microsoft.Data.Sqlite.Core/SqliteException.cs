@@ -1,7 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System;
 using System.Data.Common;
+using System.Diagnostics;
 using Microsoft.Data.Sqlite.Properties;
 using SQLitePCL;
 using static SQLitePCL.raw;
@@ -82,6 +84,21 @@ namespace Microsoft.Data.Sqlite
             }
 
             throw new SqliteException(Resources.SqliteNativeError(rc, message), rc, extendedErrorCode);
+        }
+
+        internal static void ThrowExceptionForRC(int rc, sqlite3? db, Activity? activity)
+        {
+            try
+            {
+                ThrowExceptionForRC(rc, db);
+            }
+            catch (Exception ex) when (activity is not null)
+            {
+                activity.SetStatus(ActivityStatusCode.Error, ex.Message);
+                //activity.RecordException(ex);
+
+                throw;
+            }
         }
     }
 }

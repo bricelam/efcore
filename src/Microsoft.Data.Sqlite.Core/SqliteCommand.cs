@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite.OpenTelemetry;
 using Microsoft.Data.Sqlite.Properties;
 using SQLitePCL;
 using static SQLitePCL.raw;
@@ -307,10 +308,33 @@ namespace Microsoft.Data.Sqlite
                 throw new InvalidOperationException(Resources.TransactionCompleted);
             }
 
+            var activity = SqliteActivitySourceHelper.ActivitySource
+                .StartActivity(
+                    SqliteActivitySourceHelper.ActivityName,
+                    ActivityKind.Client,
+                    default(ActivityContext),
+                    SqliteActivitySourceHelper.CreationTags);
+            if (activity is not null
+                && activity.IsAllDataRequested)
+            {
+                var connectionOptions = _connection.ConnectionOptions;
+
+                activity.DisplayName = connectionOptions.DataSource;
+
+                // TODO: Strip? (with cache)
+                if (connectionOptions.Password.Length == 0)
+                {
+                    activity.SetTag("db.connection_string", _connection.ConnectionString);
+                }
+
+                activity.SetTag("db.name", _connection.DataSource);
+                activity.SetTag("db.statement", CommandText);
+            }
+
             var timer = new Stopwatch();
             var closeConnection = behavior.HasFlag(CommandBehavior.CloseConnection);
 
-            var dataReader = new SqliteDataReader(this, timer, GetStatements(timer), closeConnection);
+            var dataReader = new SqliteDataReader(this, timer, GetStatements(timer), activity, closeConnection);
             dataReader.NextResult();
 
             return DataReader = dataReader;

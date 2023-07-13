@@ -27,6 +27,7 @@ namespace Microsoft.Data.Sqlite
         private readonly bool _closeConnection;
         private readonly Stopwatch _timer;
         private IEnumerator<sqlite3_stmt>? _stmtEnumerator;
+        private Activity? _activity;
         private SqliteDataRecord? _record;
         private bool _closed;
         private int _recordsAffected = -1;
@@ -35,11 +36,13 @@ namespace Microsoft.Data.Sqlite
             SqliteCommand command,
             Stopwatch timer,
             IEnumerable<sqlite3_stmt> stmts,
+            Activity? activity,
             bool closeConnection)
         {
             _command = command;
             _timer = timer;
             _stmtEnumerator = stmts.GetEnumerator();
+            _activity = activity;
             _closeConnection = closeConnection;
         }
 
@@ -149,9 +152,9 @@ namespace Microsoft.Data.Sqlite
             sqlite3_stmt stmt;
             int rc;
 
-            while (_stmtEnumerator!.MoveNext())
+            try
             {
-                try
+                while (_stmtEnumerator!.MoveNext())
                 {
                     stmt = _stmtEnumerator.Current;
 
@@ -178,7 +181,7 @@ namespace Microsoft.Data.Sqlite
                     // It's a SELECT statement
                     if (sqlite3_column_count(stmt) != 0)
                     {
-                        _record = new SqliteDataRecord(stmt, rc != SQLITE_DONE, _command.Connection, AddChanges);
+                        _record = new SqliteDataRecord(stmt, _activity, rc != SQLITE_DONE, _command.Connection, AddChanges);
 
                         return true;
                     }
@@ -194,15 +197,25 @@ namespace Microsoft.Data.Sqlite
                     var changes = sqlite3_changes(_command.Connection.Handle);
                     AddChanges(changes);
                 }
-                catch
+            }
+            catch (Exception ex)
+            {
+                if (_activity is not null)
+                {
+                    _activity.SetStatus(ActivityStatusCode.Error, ex.Message);
+                    //_activity.RecordException(ex);
+                }
+
+                if (_stmtEnumerator!.Current is not null)
                 {
                     sqlite3_reset(_stmtEnumerator.Current);
-                    _stmtEnumerator.Dispose();
-                    _stmtEnumerator = null;
-                    Dispose();
-
-                    throw;
                 }
+
+                _stmtEnumerator.Dispose();
+                _stmtEnumerator = null;
+                Dispose();
+
+                throw;
             }
 
             return false;
@@ -262,6 +275,9 @@ namespace Microsoft.Data.Sqlite
             }
 
             _stmtEnumerator?.Dispose();
+
+            _activity?.Stop();
+            _activity = null;
 
             _closed = true;
 

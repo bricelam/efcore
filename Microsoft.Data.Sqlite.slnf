@@ -3,6 +3,7 @@
     "path": "All.sln",
     "projects": [
       "src\\Microsoft.Data.Sqlite.Core\\Microsoft.Data.Sqlite.Core.csproj",
+      "src\\Microsoft.Data.Sqlite.OpenTelemetry\\Microsoft.Data.Sqlite.OpenTelemetry.csproj",
       "src\\Microsoft.Data.Sqlite\\Microsoft.Data.Sqlite.csproj",
       "test\\Microsoft.Data.Sqlite.Tests\\Microsoft.Data.Sqlite.Tests.csproj",
       "test\\Microsoft.Data.Sqlite.Tests\\Microsoft.Data.Sqlite.e_sqlcipher.Tests.csproj",

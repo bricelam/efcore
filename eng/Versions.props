@@ -25,6 +25,8 @@
     <MicrosoftExtensionsDependencyModelVersion>8.0.0-preview.7.23364.11</MicrosoftExtensionsDependencyModelVersion>
     <MicrosoftExtensionsHostFactoryResolverSourcesVersion>8.0.0-preview.7.23364.11</MicrosoftExtensionsHostFactoryResolverSourcesVersion>
     <MicrosoftExtensionsLoggingVersion>8.0.0-preview.7.23364.11</MicrosoftExtensionsLoggingVersion>
+    <MicrosoftExtensionsOptionsVersion>8.0.0-preview.7.23364.11</MicrosoftExtensionsOptionsVersion>
+    <SystemDiagnosticsDiagnosticSourceVersion>8.0.0-preview.7.23364.11</SystemDiagnosticsDiagnosticSourceVersion>
     <SystemTextJsonVersion>8.0.0-preview.7.23364.11</SystemTextJsonVersion>
     <MicrosoftNETCoreAppRefVersion>8.0.0-preview.7.23364.11</MicrosoftNETCoreAppRefVersion>
     <MicrosoftNETCoreAppRuntimewinx64Version>8.0.0-preview.7.23364.11</MicrosoftNETCoreAppRuntimewinx64Version>

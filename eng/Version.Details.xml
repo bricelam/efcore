@@ -37,6 +37,14 @@
       <Uri>https://github.com/dotnet/runtime</Uri>
       <Sha>bb38848e9877dc0b43860dc219ebe36fc04a6bb3</Sha>
     </Dependency>
+    <Dependency Name="Microsoft.Extensions.Options" Version="8.0.0-preview.7.23364.11">
+      <Uri>https://github.com/dotnet/runtime</Uri>
+      <Sha>bb38848e9877dc0b43860dc219ebe36fc04a6bb3</Sha>
+    </Dependency>
+    <Dependency Name="System.Diagnostics.DiagnosticSource" Version="8.0.0-preview.7.23364.11">
+      <Uri>https://github.com/dotnet/runtime</Uri>
+      <Sha>bb38848e9877dc0b43860dc219ebe36fc04a6bb3</Sha>
+    </Dependency>
     <Dependency Name="System.Text.Json" Version="8.0.0-preview.7.23364.11">
       <Uri>https://github.com/dotnet/runtime</Uri>
       <Sha>bb38848e9877dc0b43860dc219ebe36fc04a6bb3</Sha>

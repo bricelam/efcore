@@ -25,6 +25,7 @@ updates:
       - dependency-name: Mono.TextTemplating
       - dependency-name: NetTopologySuite*
       - dependency-name: Newtonsoft.Json
+      - dependency-name: OpenTelemetry*
       - dependency-name: SQLitePCLRaw*
     ignore:
       # Affects minimum required Visual Studio version

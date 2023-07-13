@@ -16,6 +16,7 @@ namespace Microsoft.Data.Sqlite
 {
     internal class SqliteDataRecord : SqliteValueReader, IDisposable
     {
+        private readonly Activity? _activity;
         private readonly SqliteConnection _connection;
         private readonly Action<int> _addChanges;
         private byte[][]? _blobCache;
@@ -27,9 +28,10 @@ namespace Microsoft.Data.Sqlite
         private bool _alreadyThrown;
         private bool _alreadyAddedChanges;
 
-        public SqliteDataRecord(sqlite3_stmt stmt, bool hasRows, SqliteConnection connection, Action<int> addChanges)
+        public SqliteDataRecord(sqlite3_stmt stmt, Activity? activity, bool hasRows, SqliteConnection connection, Action<int> addChanges)
         {
             Handle = stmt;
+            _activity = activity;
             HasRows = hasRows;
             _connection = connection;
             _addChanges = addChanges;
@@ -411,7 +413,7 @@ namespace Microsoft.Data.Sqlite
             try
             {
                 rc = sqlite3_step(Handle);
-                SqliteException.ThrowExceptionForRC(rc, _connection.Handle);
+                SqliteException.ThrowExceptionForRC(rc, _connection.Handle, _activity);
             }
             catch
             {
@@ -429,7 +431,7 @@ namespace Microsoft.Data.Sqlite
             {
                 return true;
             }
-            
+
             AddChanges();
             _alreadyAddedChanges = true;
 
@@ -441,7 +443,7 @@ namespace Microsoft.Data.Sqlite
             var rc = sqlite3_reset(Handle);
             if (!_alreadyThrown)
             {
-                SqliteException.ThrowExceptionForRC(rc, _connection.Handle);
+                SqliteException.ThrowExceptionForRC(rc, _connection.Handle, _activity);
             }
 
             if (!_alreadyAddedChanges)

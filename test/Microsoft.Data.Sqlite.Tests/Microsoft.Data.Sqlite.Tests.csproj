@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>$(DefaultNetCoreTargetFramework);net462</TargetFrameworks>
@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Microsoft.Data.Sqlite.Core\Microsoft.Data.Sqlite.Core.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Data.Sqlite.OpenTelemetry\Microsoft.Data.Sqlite.OpenTelemetry.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.5" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" Version="1.4.0" />
   </ItemGroup>
 
 </Project>
